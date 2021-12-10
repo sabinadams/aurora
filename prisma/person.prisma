@@ -1,0 +1,13 @@
+model Person {
+  id        Int     @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  parent    User?   @relation(fields: [parentId], references: [id])
+  parentId  Int?
+  banana    String
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    Person Person
+    name String?
+}

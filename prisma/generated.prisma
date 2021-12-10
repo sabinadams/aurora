@@ -16,10 +16,19 @@ model Post {
 	authorId Int?
 }
 model User {
+	personId Int
 	id Int @id @default(autoincrement())
-	email String @unique
+	Person Person?  @relation(name: "PersonToUser", fields: [personId], references: [id])
 	name String?
+	email String @unique
 	posts Post[]  @relation(name: "PostToUser")
+}
+model Person {
+	id Int @id @default(autoincrement())
+	createdAt DateTime @default(now())
+	parent User?  @relation(name: "PersonToUser")
+	parentId Int?
+	banana String
 }
 enum Role {
 	USER
