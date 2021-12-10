@@ -1,4 +1,4 @@
-export type AuroraConfig =  {
-    files: string[]
-    output: string;
-}
+export type AuroraConfig = {
+  files: string[];
+  output: string;
+};

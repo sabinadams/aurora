@@ -1,4 +1,4 @@
-import type { AuroraConfig } from "../models";
+import type { AuroraConfig } from '../models';
 /**
  *
  * @returns The configuration JSON object from the aurora configuration file

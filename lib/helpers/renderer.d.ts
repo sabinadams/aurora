@@ -1,4 +1,4 @@
-import { DataSource, DMMF, GeneratorConfig } from "@prisma/generator-helper";
+import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
 /**
  *
  * @param datasources A list of Prisma Datasources

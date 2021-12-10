@@ -1,27 +1,25 @@
 #!/usr/bin/env node
 
-import chalk from "chalk";
-import clear from "clear";
-import * as figlet from "figlet";
-import { Command } from "commander";
-import aurora from "./aurora";
-import dotenv from "dotenv";
+import chalk from 'chalk';
+import clear from 'clear';
+import * as figlet from 'figlet';
+import { Command } from 'commander';
+import aurora from './aurora';
+import dotenv from 'dotenv';
 
 // Get Env Vars
 dotenv.config();
 
-// Console Welcome 
+// Console Welcome
 clear();
-console.log(
-  chalk.bold.magenta(figlet.textSync("Aurora", { horizontalLayout: "full" }))
-);
+console.log(chalk.bold.magenta(figlet.textSync('Aurora', { horizontalLayout: 'full' })));
 
 // CLI Command
-const program = new Command()
+const program = new Command();
 program
-  .version("0.0.1")
+  .version('0.0.1')
   .description(
-    "A tool that orchestrates prisma files in a way that allows multiple .prisma files with cross-relations"
+    'A tool that orchestrates prisma files in a way that allows multiple .prisma files with cross-relations'
   )
   .parse(process.argv);
 

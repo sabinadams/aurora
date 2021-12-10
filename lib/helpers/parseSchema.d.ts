@@ -1,4 +1,4 @@
-import type { SchemaInformation } from "../models";
+import type { SchemaInformation } from '../models';
 /**
  *
  * @param filePath Path to the Prisma file we are parsing
