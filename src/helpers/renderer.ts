@@ -51,8 +51,8 @@ function renderAttribute(
  */
 function renderFieldRelation(field: DMMF.Field): string {
   return field.relationFromFields.length > 0
-    ? ` @relation(name: "${field.relationName}", fields: [${field.relationFromFields}], references: [${field.relationToFields}])`
-    : ` @relation(name: "${field.relationName}")`;
+    ? `@relation(name: "${field.relationName}", fields: [${field.relationFromFields}], references: [${field.relationToFields}])`
+    : `@relation(name: "${field.relationName}")`;
 }
 
 /**

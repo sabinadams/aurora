@@ -11,7 +11,9 @@
     "create": "npm run build && npm run test",
     "build": "tsc -p .",
     "local": "sudo npm i -g && aurora",
-    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
+    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "keywords": [
     "prisma",
@@ -25,10 +27,13 @@
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.4",
     "@types/glob": "^7.2.0",
+    "@types/jest": "^27.0.3",
     "@types/node": "^16.11.12",
+    "jest": "^27.4.4",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "prisma": "^3.2.1",
+    "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.3"
   },
