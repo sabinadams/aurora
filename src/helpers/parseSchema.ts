@@ -14,13 +14,15 @@ export async function parseSchema(
   filePath: string
 ): Promise<SchemaInformation> {
   try {
+    // Reads the .prisma file
     const datamodel = await readFile(path.join(process.cwd(), filePath), {
       encoding: 'utf-8',
     });
 
+    // Grabs the DMMF and Config data using Prisma's SDK
     const dmmf = await getDMMF({ datamodel });
     const config = await getConfig({ datamodel });
-
+    
     return {
       models: dmmf.datamodel.models as DMMF.Model[],
       enums: dmmf.datamodel.enums,

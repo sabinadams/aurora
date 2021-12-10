@@ -3,7 +3,8 @@ import { AuroraConfig, SchemaInformation } from "./models";
 import type { DMMF } from "@prisma/client/runtime";
 import type { DataSource, GeneratorConfig } from "@prisma/generator-helper";
 import { ERRORS } from "./util/CONSTANTS";
-import { renderDatasources, renderGenerators, renderModels, renderEnums } from './functions/renderer'
+import { renderDatasources, renderGenerators, renderModels, renderEnums } from './renderer'
+
 export default async function aurora() {
   // Grab the aurora configuration options from config file
   const config: AuroraConfig = await getAuroraConfigJSON();

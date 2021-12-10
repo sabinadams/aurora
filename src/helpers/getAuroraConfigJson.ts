@@ -6,15 +6,21 @@ import { CONFIG_FILE_NAME, ERRORS } from "../util/CONSTANTS";
 
 const readFile = promisify(fs.readFile);
 
+/**
+ * 
+ * @returns The configuration JSON object from the aurora configuration file
+ */
 export async function getAuroraConfigJSON(): Promise<AuroraConfig> {
     try {
+      // Read the JSON
       const jsonString = await readFile(
         path.join(process.cwd(), CONFIG_FILE_NAME),
         { encoding: "utf-8" }
       );
-
+      
       const config: AuroraConfig = JSON.parse(jsonString);
 
+      // Ensure all of the fields were provided and are valid
       validateConfigurationObject(config);
 
       return JSON.parse(jsonString);
@@ -26,6 +32,11 @@ export async function getAuroraConfigJSON(): Promise<AuroraConfig> {
     }
 }
 
+/**
+ * 
+ * @param config The Configuration object to validate
+ * @description Throws errors if anything is invalid
+ */
 const validateConfigurationObject = (config: AuroraConfig) => {
   if (!Object.keys(config)) {
     console.error(

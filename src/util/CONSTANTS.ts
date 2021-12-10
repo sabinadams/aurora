@@ -6,3 +6,4 @@ export const ERRORS = {
     NON_PRISMA_FILE: 'Non-Prisma file provided',
     INVALID_SCHEMA: 'There was an issue with at least one of your schemas'
 }
+export const VALID_FIELD_KINDS = ["scalar", "object", "enum"];
