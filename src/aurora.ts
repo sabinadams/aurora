@@ -15,7 +15,7 @@ export default async function aurora() {
   );
 
   // Get a list of all the models
-  let models: string = renderModels( await combineModels(
+  let models: string = renderModels( combineModels(
     schemas.reduce(
       (acc: DMMF.Model[], curr: SchemaInformation) => [...acc, ...curr.models],
       []

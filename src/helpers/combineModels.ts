@@ -5,9 +5,9 @@ import { DMMF } from "@prisma/client/runtime";
  * @param rawModels A list of Prisma models to combine in a way that doesn't duplicate fields
  * @returns A list of Prisma Models
  */
-export async function combineModels(
+export function combineModels(
   rawModels: DMMF.Model[]
-): Promise<DMMF.Model[]> {
+): DMMF.Model[] {
   const models: Record<string, DMMF.Model> = rawModels.reduce(
     (acc: Record<string, DMMF.Model>, curr: DMMF.Model) => {
       // If we already saw this model

@@ -12,21 +12,21 @@ model Post {
 	title String
 	content String?
 	published Boolean @default(false)
-	author User?  @relation(name: "PostToUser", fields: [authorId], references: [id])
+	author User? @relation(name: "PostToUser", fields: [authorId], references: [id])
 	authorId Int?
 }
 model User {
 	personCreatedAt DateTime
 	personParentId Int
 	id Int @id @default(autoincrement())
-	Person Person?  @relation(name: "PersonToUser", fields: [personCreatedAt,personParentId], references: [createdAt,parentId])
+	Person Person? @relation(name: "PersonToUser", fields: [personCreatedAt,personParentId], references: [createdAt,parentId])
 	name String?
 	email String @unique
-	posts Post[]  @relation(name: "PostToUser")
+	posts Post[] @relation(name: "PostToUser")
 }
 model Person {
 	createdAt DateTime @default(now())
-	parent User?  @relation(name: "PersonToUser")
+	parent User? @relation(name: "PersonToUser")
 	parentId Int @unique
 	banana String
 	@@id([createdAt, parentId])
