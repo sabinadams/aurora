@@ -3,16 +3,21 @@
 import chalk from "chalk";
 import clear from "clear";
 import * as figlet from "figlet";
-import program from "commander";
+import { Command } from "commander";
 import aurora from "./aurora";
 import dotenv from "dotenv";
+
+// Get Env Vars
 dotenv.config();
 
+// Console Welcome 
 clear();
 console.log(
   chalk.bold.magenta(figlet.textSync("Aurora", { horizontalLayout: "full" }))
 );
 
+// CLI Command
+const program = new Command()
 program
   .version("0.0.1")
   .description(
@@ -20,4 +25,5 @@ program
   )
   .parse(process.argv);
 
+// Run aurora
 aurora();
