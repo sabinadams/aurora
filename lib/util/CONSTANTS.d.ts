@@ -6,3 +6,4 @@ export declare const ERRORS: {
     NON_PRISMA_FILE: string;
     INVALID_SCHEMA: string;
 };
+export declare const VALID_FIELD_KINDS: string[];

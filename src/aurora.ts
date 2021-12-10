@@ -1,9 +1,9 @@
-import { parseSchema, getAuroraConfigJSON, combineModels, writeSchema } from "./functions";
+import { parseSchema, getAuroraConfigJSON, combineModels, writeSchema } from "./helpers";
 import { AuroraConfig, SchemaInformation } from "./models";
 import type { DMMF } from "@prisma/client/runtime";
 import type { DataSource, GeneratorConfig } from "@prisma/generator-helper";
 import { ERRORS } from "./util/CONSTANTS";
-import { renderDatasources, renderGenerators, renderModels, renderEnums } from './renderer'
+import { renderDatasources, renderGenerators, renderModels, renderEnums } from './helpers/renderer'
 
 export default async function aurora() {
   // Grab the aurora configuration options from config file
