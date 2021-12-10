@@ -1,4 +1,4 @@
-import { parseSchema, getAuroraConfigJSON, combineModels } from "./functions";
+import { parseSchema, getAuroraConfigJSON, combineModels, writeSchema } from "./functions";
 import { AuroraConfig, SchemaInformation } from "./models";
 import type { DMMF } from "@prisma/client/runtime";
 import type { DataSource, GeneratorConfig } from "@prisma/generator-helper";
@@ -72,5 +72,5 @@ export default async function aurora() {
     enums
   ].join("\n");
 
-  console.log(output);
+  await writeSchema( config.output, output)
 }
