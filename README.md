@@ -129,20 +129,20 @@ The generated schema file will look like this:
 
 ```prisma
 model Author {
-	id        Int    @id
-	books     Book[] @relation(name: "AuthorToBook")
-	firstName String
-	lastName  String
-	dob       DateTime
-	age       Int
+    id        Int    @id
+    books     Book[] @relation(name: "AuthorToBook")
+    firstName String
+    lastName  String
+    dob       DateTime
+    age       Int
 }
 model Book {
-	id          Int @id @default(autoincrement())
-	authorId    Int
-	author      Author? @relation(name: "AuthorToBook", fields: [authorId], references: [id])
-	pages       Int
-	releaseDate DateTime
-	genre       String
+    id          Int @id @default(autoincrement())
+    authorId    Int
+    author      Author? @relation(name: "AuthorToBook", fields: [authorId], references: [id])
+    pages       Int
+    releaseDate DateTime
+    genre       String
 }
 ```
 
