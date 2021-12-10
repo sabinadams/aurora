@@ -7,18 +7,18 @@ generator client {
 	provider = "prisma-client-js"
 }
 model Post {
-	id Int? @id @default(autoincrement())
-	createdAt DateTime? @default(now())
-	title String?
-	content String
-	published Boolean? @default(false)
+	id Int @id @default(autoincrement())
+	createdAt DateTime @default(now())
+	title String
+	content String?
+	published Boolean @default(false)
 	author User?  @relation(name: "PostToUser", fields: [authorId], references: [id])
-	authorId Int
+	authorId Int?
 }
 model User {
-	id Int? @id @default(autoincrement())
-	email String? @unique
-	name String
+	id Int @id @default(autoincrement())
+	email String @unique
+	name String?
 	posts Post[]  @relation(name: "PostToUser")
 }
 enum Role {

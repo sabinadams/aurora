@@ -65,7 +65,7 @@ function renderField(
 
     if ( field.isList ) {
         fieldString = `${fieldString}[]`
-    } else if ( field.isRequired || ['enum', 'object'].includes(field.kind) ) {
+    } else if ( !field.isRequired || ['enum', 'object'].includes(field.kind) ) {
         fieldString = `${fieldString}?`
     }
     
