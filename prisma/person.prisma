@@ -1,9 +1,12 @@
 model Person {
-  id        Int     @id @default(autoincrement())
   createdAt  DateTime   @default(now())
   parent    User?   @relation(fields: [parentId], references: [id])
-  parentId  Int?
+  parentId  Int @unique
   banana    String
+
+  // @@unique(fields: [id, parentId], name: "tes")
+  @@id([createdAt, parentId])
+  @@index([parentId], map: "test")
 }
 
 model User {

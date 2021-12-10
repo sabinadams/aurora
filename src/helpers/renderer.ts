@@ -127,6 +127,24 @@ function renderField(field: DMMF.Field): string {
 
 /**
  * 
+ * @param uniqueField Array of Arrays that hold the field names for the unique field
+ * @returns The generated Unique line for a model (e.g. @@unique([id, otherId])) )
+ */
+function renderUniqueField( uniqueField: string[] ): string {
+  return `@@unique([${uniqueField.join(', ')}])`
+}
+
+/**
+ * 
+ * @param fields Fields in the ID definition
+ * @returns The generated ID definition for a model. (e.g. @@id([id, otherId])) 
+ */
+function renderIdOrPk( fields: string[] ): string {
+  return fields.length ? `@@id([${fields.join(', ')}])` : ''
+}
+
+/**
+ * 
  * @param datasources A list of Prisma Datasources
  * @returns string with rendered Datasource Blocks 
  */
@@ -190,9 +208,16 @@ export function renderModels(models: DMMF.Model[]): string {
     .map((model) => {
       let items =  model.fields.map(renderField);
 
+      // Unique fields
+      items.push(...model.uniqueFields.map(renderUniqueField))
+
       // If there is a table name mapping, add it
       if (model?.dbName?.length) items.push(`@@map("${model.dbName}")`);
 
+      // ID/PK  ( idFields is backwards compatibility for prisma versions below v.2.30.0)
+      if ( model.idFields || model.primaryKey ) 
+        items.push(renderIdOrPk(model?.idFields || model?.primaryKey?.fields ))
+      
       return renderBlock("model", model.name, items);
     })
     .join("\n");
