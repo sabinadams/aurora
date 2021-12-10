@@ -45,6 +45,44 @@ Once installed, create a file named `aurora.config.json`. This is what Aurora us
 
 Inside your project, you can now run the command `aurora` from the directory where your config file lives, which will take all of the `.prisma` files you included in your configuration, combine them, and output them into the specified output file.
 
+## How Merging Works
+
+If you have two models in separate files that each have the same name but have different fields, the resulting merged model will have both of the individual models' fields.
+
+Consider, for example, a situation where you have a prisma file for indivdual services in your application. Both files might describe a user differently in the context of their own functionality, but the resulting prisma client will need both sets of definitions.
+
+##### AuthService.prisma
+```prisma
+model User {
+    id        Int @id @default(@autoincrement())
+    password  String
+    email     String
+    lastLogin DateTime
+}
+```
+
+##### ProfileService.prisma
+```prisma
+model User {
+    id       Int @id @default(@autoincrement())
+    username String
+    email    String
+    age      Int
+}
+```
+
+After running `aurora`, the generated schema will look like this:
+```prisma
+model User {
+    id        Int @id @default(@autoincrement())
+    username  String
+    email     String
+    age       Int
+    password  String
+    lastLogin DateTime
+}
+```
+
 ## Handling Relations Across Files
 
 One common scenario that arises when splitting the schema out into smaller chunks is having to set up a relation from a model in one file to a model in another file. Aurora will handle this as long as you create an alias to the target relation model in the file you are working in that contains the fields the relationship involves.
