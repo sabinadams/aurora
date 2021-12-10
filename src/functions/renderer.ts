@@ -150,8 +150,16 @@ export function renderModels(models: DMMF.Model[]): string {
     .join("\n");
 }
 
-export function renderEnums( enums: DMMF.DatamodelEnum[]): string {
-    // return enums.map(( enum: ) => {
-    //     return renderBlock("enum", enum.name, [])
-    // }).join('\n')
+export function renderEnums( enums: DMMF.DatamodelEnum[] ): string {
+    return enums.map( ({name, values, dbName }) => {
+        return renderBlock('enum', name, [
+            ...values.map(({ name, dbName }) => {
+                let record = name
+                if ( dbName && name !== dbName ) {
+                    record = `${record} @map("${dbName}")`
+                }
+                return record
+            })
+        ])
+    }).join('\n')
 }
