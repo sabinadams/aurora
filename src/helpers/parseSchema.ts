@@ -4,6 +4,8 @@ import { getDMMF, getConfig } from '@prisma/sdk';
 import type { DMMF } from '@prisma/client/runtime';
 import type { SchemaInformation } from '../models';
 import getModelFieldMappings from './getModelFieldMappings';
+import getModelFieldIndexes from './getModelFieldIndexes';
+
 import path from 'path';
 const readFile = promisify(fs.readFile);
 
@@ -24,15 +26,16 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
   
     // Prisma doesn't give us the field mappings 
     const modelMappedFields = getModelFieldMappings(datamodel)
+    const indexes = getModelFieldIndexes(datamodel)
 
     // Take our field mappings and inject a key on each model with our column name value
     const models = dmmf.datamodel.models.map( model => {
       model.fields = model.fields.map( field => {
-        if ( modelMappedFields[model.name][field.name] ){
+        if ( modelMappedFields[model.name][field.name] )
           field.columnName = modelMappedFields[model.name][field.name]
-        }
         return field
       })
+      model.indexes = indexes[model.name]
       return model
     }) as DMMF.Model[]
 

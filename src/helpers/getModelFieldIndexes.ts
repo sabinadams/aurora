@@ -1,11 +1,10 @@
-import { ModelMapping } from '../models'
-
+import { IndexObject } from '../models'
 /**
  * 
  * @param datamodel The datamodel string
  * @returns An object like { User: { firstName: 'first_name' } }
  */
-export default function ( datamodel: string ): { [K: string]: ModelMapping } {
+export default function ( datamodel: string ): { [K: string]: { [K: string]: string } } {
     // Split the schema up by the ending of each block and then keep each starting with 'model'
     // This should essentially give us an array of the model blocks
     const modelChunks = datamodel.split('}').filter( chunk => chunk.trim().indexOf('model') === 0 )
@@ -15,11 +14,11 @@ export default function ( datamodel: string ): { [K: string]: ModelMapping } {
         // The first line will have a model name which we will pull out later
         let pieces = modelChunk.split('\n').filter( chunk => chunk.trim().length )
 
-        // Regex for getting our @map attribute
-        const mapRegex = new RegExp(/@map\("(.*)"\)/g)
+        // Regex for getting our @@index attribute
+        const mapRegex = new RegExp(/@@index\((.*)\)/g)
 
         // Get all of the model's fields out that have the @map attribute
-        const fieldsWithMappings = pieces.slice(1)
+        const fieldsWithIndexes = pieces.slice(1)
             // Clean up new lines and spaces out of the string
             .map(field => field.replace(/\t/g, '').trim())
             // Get rid of any fields that don't even have a @map
@@ -27,10 +26,14 @@ export default function ( datamodel: string ): { [K: string]: ModelMapping } {
         
         // Add an index to the reduced array named the model's name
         // The value is an object whose keys are field names and their values are mapping names
-        modelDefinitions[pieces[0].split(' ')[1]] = fieldsWithMappings.reduce((mappings: ModelMapping, field) => ({
-            ...mappings,
-            [field.trim().split(' ')[0]]: field.split('@map("')[1].split('"')[0]
-        }), {})
+        modelDefinitions[pieces[0].split(' ')[1]] = fieldsWithIndexes.reduce((indexes: IndexObject[], field: string) => ([
+            ...indexes,
+            {
+                name: field.split('"')[1] || null,
+                fields: field.split('[')[1].split(']')[0].split(',').map( indexField => indexField.trim())
+            }
+        ]), [])
+
         return modelDefinitions
       }, {})
 }
