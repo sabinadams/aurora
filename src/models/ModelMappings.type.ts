@@ -1,2 +1,1 @@
-export type ModelMapping = { [K: string]: string } 
-  
+export type ModelMapping = { [K: string]: string };
