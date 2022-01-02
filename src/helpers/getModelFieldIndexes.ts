@@ -2,9 +2,9 @@ import { IndexObject } from '../models'
 /**
  * 
  * @param datamodel The datamodel string
- * @returns An object like { User: { firstName: 'first_name' } }
+ * @returns An object like [{ name: 'firstName_lastName', fields: ['firstName', 'lastName'] }]
  */
-export default function ( datamodel: string ): { [K: string]: { [K: string]: string } } {
+export default function ( datamodel: string ): { [K: string]: IndexObject[] } {
     // Split the schema up by the ending of each block and then keep each starting with 'model'
     // This should essentially give us an array of the model blocks
     const modelChunks = datamodel.split('}').filter( chunk => chunk.trim().indexOf('model') === 0 )
@@ -14,15 +14,12 @@ export default function ( datamodel: string ): { [K: string]: { [K: string]: str
         // The first line will have a model name which we will pull out later
         let pieces = modelChunk.split('\n').filter( chunk => chunk.trim().length )
 
-        // Regex for getting our @@index attribute
-        const mapRegex = new RegExp(/@@index\((.*)\)/g)
-
         // Get all of the model's fields out that have the @map attribute
         const fieldsWithIndexes = pieces.slice(1)
             // Clean up new lines and spaces out of the string
             .map(field => field.replace(/\t/g, '').trim())
             // Get rid of any fields that don't even have a @map
-            .filter( field => mapRegex.test(field))
+            .filter( field => /@@index\((.*)\)/g.test(field))
         
         // Add an index to the reduced array named the model's name
         // The value is an object whose keys are field names and their values are mapping names

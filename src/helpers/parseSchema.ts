@@ -16,9 +16,7 @@ const readFile = promisify(fs.readFile);
 export async function parseSchema(filePath: string): Promise<SchemaInformation> {
   try {
     // Reads the .prisma file
-    const datamodel = await readFile(path.join(process.cwd(), filePath), {
-      encoding: 'utf-8'
-    });
+    const datamodel = await readFile(path.join(process.cwd(), filePath), { encoding: 'utf-8' });
 
     // Grabs the DMMF and Config data using Prisma's SDK
     const dmmf = await getDMMF({ datamodel });
@@ -26,6 +24,7 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
   
     // Prisma doesn't give us the field mappings 
     const modelMappedFields = getModelFieldMappings(datamodel)
+    // Prisma also doesn't give us the indexes
     const indexes = getModelFieldIndexes(datamodel)
 
     // Take our field mappings and inject a key on each model with our column name value
@@ -47,7 +46,6 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
     };
   } catch (e: any) {
     console.error(
-      e.message,
       `Aurora could not parse the schema at ${filePath}. Please ensure it is of a proper format.`
     );
     throw e;
