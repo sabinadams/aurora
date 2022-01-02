@@ -1,8 +1,9 @@
 import type { DMMF } from '@prisma/client/runtime';
 import type { DataSource, GeneratorConfig } from '@prisma/generator-helper';
+import type { IndexObject } from './';
 
 export type SchemaInformation = {
-  models: DMMF.Model[];
+  models: (DMMF.Model & { indexes: IndexObject[] })[];
   enums: DMMF.DatamodelEnum[];
   datasources: DataSource[];
   generators: GeneratorConfig[];

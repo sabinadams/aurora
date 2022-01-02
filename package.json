@@ -1,6 +1,6 @@
 {
   "name": "prisma-aurora",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CLI tool that orchestrates prisma files in a way that allows multiple .prisma files with cross-relations",
   "main": "./lib/index.js",
   "bin": {
@@ -13,7 +13,8 @@
     "local": "sudo npm i -g && aurora",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "test": "jest",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watch",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "keywords": [
     "prisma",
@@ -32,13 +33,13 @@
     "jest": "^27.4.4",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
-    "prisma": "^3.2.1",
+    "prisma": "^3.7.0",
     "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.3"
   },
   "dependencies": {
-    "@prisma/client": "^3.2.1",
+    "@prisma/client": "^3.7.0",
     "@prisma/sdk": "^3.6.0",
     "chalk": "^4.1.2",
     "clear": "^0.1.0",

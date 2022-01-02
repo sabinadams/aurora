@@ -1,0 +1,4 @@
+{
+    "files": [ "./prisma/schema.prisma" ],
+    "output": "./generated.prisma"
+}

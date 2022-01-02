@@ -50,7 +50,7 @@ function renderAttribute(
  * @returns the Relation definition (e.g. @relation(name: "PostToUser"))
  */
 function renderFieldRelation(field: DMMF.Field): string {
-  return field.relationFromFields.length > 0
+  return field.relationFromFields && field.relationFromFields.length > 0
     ? `@relation(name: "${field.relationName}", fields: [${field.relationFromFields}], references: [${field.relationToFields}])`
     : `@relation(name: "${field.relationName}")`;
 }
@@ -116,11 +116,22 @@ function renderField(field: DMMF.Field): string {
 
 /**
  *
- * @param uniqueField Array of Arrays that hold the field names for the unique field
+ * @param uniqueField Array of strings that hold the field names for the unique field
  * @returns The generated Unique line for a model (e.g. @@unique([id, otherId])) )
  */
 function renderUniqueField(uniqueField: string[]): string {
   return `@@unique([${uniqueField.join(', ')}])`;
+}
+
+/**
+ *
+ * @param indexes Array of strings that hold the field names the indexed fields
+ * @returns The generated index line for a model (e.g. @@index([someId, otherId])) )
+ */
+function renderIndex(index: DMMF.uniqueIndex): string {
+  return index?.name?.length
+    ? `@@index(name: "${index.name}", [${index.fields.join(', ')}])`
+    : `@@index([${index.fields.join(', ')}])`;
 }
 
 /**
@@ -193,7 +204,10 @@ export function renderModels(models: DMMF.Model[]): string {
       let items = model.fields.map(renderField);
 
       // Unique fields
-      items.push(...model.uniqueFields.map(renderUniqueField));
+      if (model.uniqueFields) items.push(...model.uniqueFields.map(renderUniqueField));
+
+      // Indexes
+      if (model.indexes) items.push(...model.indexes.map(renderIndex));
 
       // If there is a table name mapping, add it
       if (model?.dbName?.length) items.push(`@@map("${model.dbName}")`);

@@ -1,0 +1,9 @@
+model Test {
+    id Int @map("test_mapping")
+    name Int @map("test_name")
+    lastName String
+}
+model Person {
+    id Int @map("test_mapping")
+    lastName String
+}

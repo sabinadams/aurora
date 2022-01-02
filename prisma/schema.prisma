@@ -1,0 +1,19 @@
+model User {
+	id Int @id @default(autoincrement())
+	firstName String @map("first_name")
+  model     Int
+
+  @@index(name: "userindex", [ model, id ])
+}
+
+enum Test {
+  TEST
+}
+
+model Person {
+	id Int @id @default(autoincrement())
+	firstName String @map("first_name")
+  test      String  @unique @map("Test2")
+
+  @@index([ test])
+}
