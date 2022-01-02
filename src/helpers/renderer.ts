@@ -130,7 +130,7 @@ function renderUniqueField(uniqueField: string[]): string {
  */
 function renderIndex( index: DMMF.uniqueIndex): string {
   return index?.name?.length ?
-    `@@index( name: "${index.name}", [${index.fields.join(', ')}])`
+    `@@index(name: "${index.name}", [${index.fields.join(', ')}])`
     : `@@index([${index.fields.join(', ')}])`
 }
 
@@ -204,10 +204,12 @@ export function renderModels(models: DMMF.Model[]): string {
       let items = model.fields.map(renderField);
 
       // Unique fields
-      items.push(...model.uniqueFields.map(renderUniqueField));
+      if (model.uniqueFields)
+        items.push(...model.uniqueFields.map(renderUniqueField));
 
       // Indexes
-      items.push(...model.indexes.map(renderIndex))
+      if (model.indexes)
+        items.push(...model.indexes.map(renderIndex))
 
       // If there is a table name mapping, add it
       if (model?.dbName?.length) items.push(`@@map("${model.dbName}")`);

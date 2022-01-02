@@ -131,6 +131,20 @@ describe('Renderer Functions', () => {
       expect(modelString).toContain('model Tester');
     });
 
+    it('should render an @@index', () => {
+      const modelString = renderModels([
+        {
+          ...baseModel,
+          fields: [baseField],
+          indexes: [{
+            name: 'test',
+            fields: ['id', 'firstName']
+          }]
+        }
+      ] as unknown as DMMF.Model[]);
+      expect(modelString).toContain('@@index(name: "test", [id, firstName])');
+    })
+
     it('should render a field', () => {
       const modelString = renderModels([
         {
@@ -140,6 +154,21 @@ describe('Renderer Functions', () => {
       ] as unknown as DMMF.Model[]);
       expect(modelString).toContain('id Int');
     });
+
+    it('should render a field mapping', () => {
+      const modelString = renderModels([
+        {
+          ...baseModel,
+          fields: [
+            {
+              ...baseField,
+              columnName: 'something'
+            }
+          ]
+        }
+      ] as unknown as DMMF.Model[]);
+      expect(modelString).toContain('id Int @map("something")');
+    })
 
     it('should signify an optional field', () => {
       const modelString = renderModels([

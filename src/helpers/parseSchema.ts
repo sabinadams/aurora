@@ -1,8 +1,8 @@
 import fs from 'fs';
 import { promisify } from 'util';
-import { getDMMF, getConfig } from '@prisma/sdk';
+import { getDMMF, getConfig, formatSchema } from '@prisma/sdk';
 import type { DMMF } from '@prisma/client/runtime';
-import type { SchemaInformation } from '../models';
+import type { SchemaInformation, IndexObject } from '../models';
 import getModelFieldMappings from './getModelFieldMappings';
 import getModelFieldIndexes from './getModelFieldIndexes';
 
@@ -16,7 +16,9 @@ const readFile = promisify(fs.readFile);
 export async function parseSchema(filePath: string): Promise<SchemaInformation> {
   try {
     // Reads the .prisma file
-    const datamodel = await readFile(path.join(process.cwd(), filePath), { encoding: 'utf-8' });
+    let datamodel = await readFile(path.join(process.cwd(), filePath), { encoding: 'utf-8' });
+    // Formats the schema
+    datamodel = await formatSchema({schema: datamodel})
 
     // Grabs the DMMF and Config data using Prisma's SDK
     const dmmf = await getDMMF({ datamodel });
@@ -39,13 +41,14 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
     }) as DMMF.Model[]
 
     return {
-      models,
+      models: models as unknown as (DMMF.Model & { indexes: IndexObject[]})[],
       enums: dmmf.datamodel.enums,
       datasources: config.datasources,
       generators: config.generators
     };
   } catch (e: any) {
     console.error(
+      e,
       `Aurora could not parse the schema at ${filePath}. Please ensure it is of a proper format.`
     );
     throw e;
