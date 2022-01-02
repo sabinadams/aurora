@@ -1,0 +1,3 @@
+model Test {
+  id Int @map("test_mapping")
+}

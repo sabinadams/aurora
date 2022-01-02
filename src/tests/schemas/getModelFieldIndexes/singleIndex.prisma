@@ -1,0 +1,3 @@
+model Test {
+  @@index([test, id])
+}
