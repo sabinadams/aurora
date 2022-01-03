@@ -1,11 +1,15 @@
-![Aurora](refraction.png)
+![Aurora (1)](https://user-images.githubusercontent.com/18456526/147911028-46df0f91-5e8b-465d-90c2-c5efdbd281dd.png)
 
 <div align="center">
   <h1>Aurora</h1>
 
-  <a href="https://www.npmjs.com/package/prisma-aurora"><img src="https://img.shields.io/npm/dt/prisma-aurora.svg?style=flat" /></a>
+  <a href="https://www.npmjs.com/package/prisma-aurora">
+    <img src="https://img.shields.io/npm/dt/prisma-aurora.svg?style=flat" />
+  </a>
   <span>&nbsp;&nbsp;</span>
-  <a href="https://slack.prisma.io/"><img src="https://img.shields.io/npm/v/prisma-aurora.svg?style=flat" /></a>
+  <a href="https://slack.prisma.io/">
+    <img src="https://img.shields.io/npm/v/prisma-aurora.svg?style=flat" />
+  </a>
   <br />
   <br />
   <hr />
@@ -57,7 +61,7 @@ model User {
     id        Int @id @default(@autoincrement())
     password  String
     email     String
-    lastLogin DateTime
+    lastLogin DateTime @map("last_login")
 }
 ```
 
@@ -68,6 +72,8 @@ model User {
     username String
     email    String
     age      Int
+    
+    @@index([id])
 }
 ```
 
@@ -79,7 +85,9 @@ model User {
     email     String
     age       Int
     password  String
-    lastLogin DateTime
+    lastLogin DateTime @map("last_login")
+    
+    @@index([id])
 }
 ```
 
@@ -149,3 +157,9 @@ model Book {
 Aurora merges the fields to create one model with all relations defined. 
 
 > Technically speaking, in this scenario the `Author.prisma` file does not need the `Book` alias or `books` field on the `Author` model as those will get merged in from the `Book.prisma` schema. But I left them in to make the model more explicit.
+
+---
+
+## Missing Something?
+
+If you have any questions or notice anything missing from this project, please feel free to create an issue or reach out to me on [twitter](https://twitter.com/sabinthedev)
