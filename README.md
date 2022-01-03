@@ -14,6 +14,10 @@
   <a href="https://github.com/sabinadams/aurora/actions/workflows/node.js.yml">
     <img src="https://github.com/sabinadams/aurora/actions/workflows/node.js.yml/badge.svg" />
   </a>
+  <span>&nbsp;&nbsp;</span>
+  <a href="https://github.com/sabinadams/aurora/actions/workflows/codeql-analysis.yml">
+    <img src="https://github.com/sabinadams/aurora/actions/workflows/codeql-analysis.yml/badge.svg" />
+  </a>
 </div>
 
 ## What is Aurora?
