@@ -1,8 +1,6 @@
 ![Aurora (1)](https://user-images.githubusercontent.com/18456526/147911028-46df0f91-5e8b-465d-90c2-c5efdbd281dd.png)
 
 <div align="center">
-  <h1>Aurora</h1>
-
   <a href="https://www.npmjs.com/package/prisma-aurora">
     <img src="https://img.shields.io/npm/dt/prisma-aurora.svg?style=flat" />
   </a>
