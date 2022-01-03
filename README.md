@@ -10,9 +10,10 @@
   <a href="https://slack.prisma.io/">
     <img src="https://img.shields.io/npm/v/prisma-aurora.svg?style=flat" />
   </a>
-  <br />
-  <br />
-  <hr />
+  <span>&nbsp;&nbsp;</span>
+  <a href="https://github.com/sabinadams/aurora/actions/workflows/node.js.yml">
+    <img src="https://github.com/sabinadams/aurora/actions/workflows/node.js.yml/badge.svg" />
+  </a>
 </div>
 
 ## What is Aurora?
