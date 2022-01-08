@@ -329,4 +329,12 @@ describe('aurora()', () => {
             })
         })
     })
+
+    describe('Enum Blocks', () => {
+        it('should render an enum', async () => {
+            const generatedSchema = await getGeneratedSchema(['feature-specific/enums/enum.prisma'])
+            expect(generatedSchema).toContain('enum Test')
+            expect(generatedSchema).toContain('TestValue')
+        })
+    })
 });
