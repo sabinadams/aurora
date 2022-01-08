@@ -1,6 +1,6 @@
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -8,9 +8,9 @@ generator client {
   output          = "../src/generated"
   previewFeatures = ["referentialIntegrity"]
   engineType      = "library"
-  binaryTargets   = ["native"]
+  binaryTargets   = env("BINARY_TARGETS")
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id Int @id
 }

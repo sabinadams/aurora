@@ -1,0 +1,16 @@
+datasource db {
+  provider = "postgres"
+  url      = "postgres://"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Test {
+  TestValue
+}
+
+model User {
+  id Int @id
+}
