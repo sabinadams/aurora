@@ -95,6 +95,100 @@ describe('aurora()', () => {
     })
 
     describe('Model Blocks', () => {
+        describe('Models', () => {
+            it('should render a model', async () => {
+                const generatedSchema = await getGeneratedSchema(['feature-specific/models/model.prisma'])
+                expect(generatedSchema).toContain('model User')
+            })
+            
+            describe('@@id', () => {
+                it('should render an @@id([])', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@id.prisma'])
+                    expect(generatedSchema).toContain('@@id([id])')
+                })
+    
+                it('should render an @@id(fields: [])', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@id-fields.prisma'])
+                    expect(generatedSchema).toContain('@@id(fields: [id])')
+                })
+    
+                it('should render an @@id(name: "")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@id-name.prisma'])
+                    expect(generatedSchema).toContain('@@id(name: "unique", [id])')
+                })
+    
+                it('should render an @@id(map: "")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@id-map.prisma'])
+                    expect(generatedSchema).toContain('@@id(map: "unique", [id])')
+                })
+            })
 
+            describe('@@unique', () => {
+                it('should render an @@unique([])', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@unique.prisma'])
+                    expect(generatedSchema).toContain('@@unique([id])')
+                })
+    
+                it('should render an @@unique(fields: [])', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@unique-fields.prisma'])
+                    expect(generatedSchema).toContain('@@unique(fields: [id])')
+                })
+    
+                it('should render an @@unique(name: "")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@unique-name.prisma'])
+                    expect(generatedSchema).toContain('@@unique(name: "unique", [id])')
+                })
+    
+                it('should render an @@unique(map: "")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@unique-map.prisma'])
+                    expect(generatedSchema).toContain('@@unique(map: "unique", [id])')
+                })
+            })
+
+            describe('@@index', () => {
+                it('should render an @@index([])', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@index.prisma'])
+                    expect(generatedSchema).toContain('@@index([id])')
+                })
+    
+                it('should render an @@index(fields: [])', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@index-fields.prisma'])
+                    expect(generatedSchema).toContain('@@index(fields: [id])')
+                })
+    
+                it('should render an @@index(name: "")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@index-name.prisma'])
+                    expect(generatedSchema).toContain('@@index(name: "unique", [id])')
+                })
+    
+                it('should render an @@index(map: "")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@index-map.prisma'])
+                    expect(generatedSchema).toContain('@@index(map: "unique", [id])')
+                })
+            })
+
+            describe('@@map', () => {
+                it('should render an @@map("")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@map.prisma'])
+                    expect(generatedSchema).toContain('@@map("test")')
+                })
+    
+                it('should render an @@map(name: "")', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@map-name.prisma'])
+                    expect(generatedSchema).toContain('@@map(name: "test")')
+                })
+            })
+
+            describe('@@ignore', () => {
+                it('should NOT render an @@ignore model', async () => {
+                    const generatedSchema = await getGeneratedSchema(['feature-specific/models/model-@@ignore.prisma'])
+                    expect(generatedSchema).not.toContain('@@ignore')
+                })
+            })
+        })
+
+        describe('Model Fields', () => {
+
+        })
     })
 });

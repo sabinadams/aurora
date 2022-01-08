@@ -11,5 +11,5 @@ generator client {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id Int @id
 }

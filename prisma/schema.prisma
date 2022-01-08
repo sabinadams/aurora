@@ -1,19 +1,16 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/generated"
+  previewFeatures = ["referentialIntegrity"]
+  engineType      = "library"
+  binaryTargets   = ["native"]
+}
+
 model User {
-	id Int @id @default(autoincrement())
-	firstName String @map("first_name")
-  model     Int
-
-  @@index(name: "userindex", [ model, id ])
-}
-
-enum Test {
-  TEST
-}
-
-model Person {
-	id Int @id @default(autoincrement())
-	firstName String @map("first_name")
-  test      String  @unique @map("Test2")
-
-  @@index([ test])
+  id Int @id @default(autoincrement())
 }
