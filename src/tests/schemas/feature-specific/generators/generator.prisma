@@ -1,0 +1,16 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/generated"
+  previewFeatures = ["referentialIntegrity"]
+  engineType      = "library"
+  binaryTargets   = ["native"]
+}
+
+model User {
+  id Int @id @default(autoincrement())
+}
