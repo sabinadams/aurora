@@ -12,4 +12,5 @@ generator client {
 
 model User {
   id Int @id
+  name String
 }

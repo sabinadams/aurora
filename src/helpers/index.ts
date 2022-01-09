@@ -3,9 +3,4 @@ import { getAuroraConfigJSON } from './getAuroraConfigJson';
 import { combineModels } from './combineModels';
 import { writeSchema } from './writeSchema';
 
-export {
-    parseSchema,
-    getAuroraConfigJSON,
-    combineModels,
-    writeSchema
-}
+export { parseSchema, getAuroraConfigJSON, combineModels, writeSchema };

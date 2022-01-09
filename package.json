@@ -13,6 +13,7 @@
     "local": "sudo npm i -g && aurora",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "test": "jest",
+    "test-output": "jest -- ./src/tests/aurora.test.ts",
     "test-watch": "jest --watch",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
