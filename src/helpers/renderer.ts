@@ -150,14 +150,27 @@ function renderIdOrPk(fields: string[]): string {
  */
 export function renderDatasources(datasources: DataSource[]): string {
   return datasources
-    .map(({ activeProvider, name, url: config }) => {
-      return renderBlock('datasource', name, [
-        renderAttribute('provider', activeProvider, { quotes: true }),
-        renderAttribute('url', config.fromEnvVar ? config.fromEnvVar : config.value, {
-          env: config.fromEnvVar ? true : false,
-          quotes: true
-        })
-      ]);
+    .map((datasource: any) => {
+      return renderBlock(
+        'datasource',
+        datasource.name,
+        Object.keys(datasource)
+          .filter((key) => key !== 'name')
+          .map((field) => {
+            let value = '';
+            let isEnvVar = datasource[field].fromEnvVar ? true : false;
+
+            if (typeof datasource[field] == 'string') {
+              value = datasource[field];
+            } else {
+              value = isEnvVar ? datasource[field].fromEnvVar : datasource[field].value;
+            }
+            return renderAttribute(field, value, {
+              env: isEnvVar,
+              quotes: !isEnvVar
+            });
+          })
+      );
     })
     .join('\n');
 }

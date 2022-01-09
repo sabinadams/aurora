@@ -7,3 +7,5 @@ export const ERRORS = {
   INVALID_SCHEMA: 'There was an issue with at least one of your schemas'
 };
 export const VALID_FIELD_KINDS = ['scalar', 'object', 'enum'];
+
+export const UNSUPPORTED_DATASOURCE_FIELDS = ['shadowDatabaseUrl', 'referentialIntegrity'];
