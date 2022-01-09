@@ -71,41 +71,53 @@ describe('aurora()', () => {
   });
 
   describe('Generator Blocks', () => {
-    let generatedSchema = '';
-    let generatedSchemaWithBinaryEnv = '';
-    beforeAll(async () => {
-      generatedSchema = await getGeneratedSchema(['feature-specific/generators/generator.prisma']);
-      generatedSchemaWithBinaryEnv = await getGeneratedSchema([
+    it('should render generator name', async () => {
+      const generatedSchema = await getGeneratedSchema([
         'feature-specific/generators/generator.prisma'
       ]);
-    });
-
-    it('should render generator name', () => {
       expect(generatedSchema).toContain('generator client');
     });
 
-    it('should render generator provider', () => {
+    it('should render generator provider', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/generator.prisma'
+      ]);
       expect(generatedSchema).toContain('provider = "prisma-client-js"');
     });
 
-    it('should render generator output', () => {
+    it('should render generator output', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/generator.prisma'
+      ]);
       expect(generatedSchema).toContain('output = "../src/generated"');
     });
 
-    it('should render generator previewFeatures', () => {
+    it('should render generator previewFeatures', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/generator.prisma'
+      ]);
       expect(generatedSchema).toContain('previewFeatures = ["referentialIntegrity"]');
     });
 
-    it('should render generator engineType', () => {
+    it('should render generator engineType', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/generator.prisma'
+      ]);
       expect(generatedSchema).toContain('engineType = "library"');
     });
 
-    it('should render generator binaryTarget', () => {
+    it('should render generator binaryTarget', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/generator.prisma'
+      ]);
       expect(generatedSchema).toContain('binaryTargets = ["native"]');
     });
 
-    it('should render generator env var in binaryTarget', () => {
-      expect(generatedSchemaWithBinaryEnv).toContain('binaryTargets = env("BINARY_TARGETS")');
+    it('should render generator env var in binaryTarget', async () => {
+      const generatedSchemaWithBinaryEnv = await getGeneratedSchema([
+        'feature-specific/generators/generator-binary-env.prisma'
+      ]);
+      expect(generatedSchemaWithBinaryEnv).toContain('binaryTargets = [env("BINARY_TARGETS")]');
     });
   });
 

@@ -145,32 +145,62 @@ function renderIdOrPk(fields: string[]): string {
 
 /**
  *
+ * @param fields A list of fields from a generator or datasource
+ * @returns A rendered attribute block
+ */
+function renderConfigFields(fields: any) {
+  return (
+    Object.keys(fields)
+      // Don't care about the name field
+      .filter((key) => key !== 'name')
+      // Make sure the key isn't null
+      .filter((key) => fields[key])
+
+      .map((field) => {
+        let value = '';
+        let isEnvVar = false;
+
+        // If it's a string, that should be our value
+        if (typeof fields[field] == 'string') {
+          value = fields[field];
+          // If it's an array, go through the array
+        } else if (Array.isArray(fields[field])) {
+          value = `[${fields[field]
+            .map((val: any) => {
+              let fieldIsEnvVar = false;
+              if (typeof val == 'string') {
+                val = `"${val}"`;
+              } else {
+                fieldIsEnvVar = val.fromEnvVar ? true : false;
+                val = fieldIsEnvVar ? `env("${val.fromEnvVar}")` : `"${val.value}"`;
+              }
+              return val;
+            })
+            .join(',')}]`;
+          // It must be an env var object. Get the data
+        } else {
+          isEnvVar = fields[field].fromEnvVar ? true : false;
+          value = isEnvVar ? fields[field].fromEnvVar : fields[field].value;
+        }
+
+        // Render the attribute and return it
+        return renderAttribute(field, value, {
+          env: isEnvVar,
+          quotes: !isEnvVar && !Array.isArray(fields[field])
+        });
+      })
+  );
+}
+
+/**
+ *
  * @param datasources A list of Prisma Datasources
  * @returns string with rendered Datasource Blocks
  */
 export function renderDatasources(datasources: DataSource[]): string {
   return datasources
     .map((datasource: any) => {
-      return renderBlock(
-        'datasource',
-        datasource.name,
-        Object.keys(datasource)
-          .filter((key) => key !== 'name')
-          .map((field) => {
-            let value = '';
-            let isEnvVar = datasource[field].fromEnvVar ? true : false;
-
-            if (typeof datasource[field] == 'string') {
-              value = datasource[field];
-            } else {
-              value = isEnvVar ? datasource[field].fromEnvVar : datasource[field].value;
-            }
-            return renderAttribute(field, value, {
-              env: isEnvVar,
-              quotes: !isEnvVar
-            });
-          })
-      );
+      return renderBlock('datasource', datasource.name, renderConfigFields(datasource));
     })
     .join('\n');
 }
@@ -182,25 +212,12 @@ export function renderDatasources(datasources: DataSource[]): string {
  */
 export function renderGenerators(generators: GeneratorConfig[]): string {
   return generators
-    .map((generator) => {
-      return renderBlock('generator', generator.name, [
-        renderAttribute('provider', generator.provider.value, { quotes: true }),
-        renderAttribute(
-          'output',
-          generator?.output?.fromEnvVar ? generator.output.fromEnvVar : generator?.output?.value,
-          { env: generator?.output?.fromEnvVar ? true : false, quotes: true }
-        ),
-        renderAttribute(
-          'binaryTargets',
-          generator.binaryTargets.length
-            ? JSON.stringify(generator.binaryTargets as unknown as String[])
-            : null
-        ),
-        renderAttribute(
-          'previewFeatures',
-          generator.previewFeatures.length ? JSON.stringify(generator.previewFeatures) : null
-        )
-      ]);
+    .map((generator: any) => {
+      generator = {
+        ...generator,
+        ...generator.config
+      };
+      return renderBlock('generator', generator.name, renderConfigFields(generator));
     })
     .join('\n');
 }
