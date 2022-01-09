@@ -1,6 +1,5 @@
 import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
-import { VALID_FIELD_KINDS } from '../util/CONSTANTS';
-
+import { VALID_FIELD_KINDS, DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
 /**
  *
  * @param type Prisma block's type
@@ -148,14 +147,15 @@ function renderIdOrPk(fields: string[]): string {
  * @param fields A list of fields from a generator or datasource
  * @returns A rendered attribute block
  */
-function renderConfigFields(fields: any) {
+function renderConfigFields(fields: any, renderable: string[]) {
   return (
     Object.keys(fields)
       // Don't care about the name field
       .filter((key) => key !== 'name')
       // Make sure the key isn't null
       .filter((key) => fields[key])
-
+      // Make sure this field is in the list of renderable fields
+      .filter((key) => renderable.includes(key))
       .map((field) => {
         let value = '';
         let isEnvVar = false;
@@ -164,7 +164,7 @@ function renderConfigFields(fields: any) {
         if (typeof fields[field] == 'string') {
           value = fields[field];
           // If it's an array, go through the array
-        } else if (Array.isArray(fields[field])) {
+        } else if (Array.isArray(fields[field]) && fields[field].length) {
           value = `[${fields[field]
             .map((val: any) => {
               let fieldIsEnvVar = false;
@@ -200,7 +200,11 @@ function renderConfigFields(fields: any) {
 export function renderDatasources(datasources: DataSource[]): string {
   return datasources
     .map((datasource: any) => {
-      return renderBlock('datasource', datasource.name, renderConfigFields(datasource));
+      // Fix naming differences
+      datasource['provider'] = datasource.activeProvider;
+      
+      // Render the block
+      return renderBlock('datasource', datasource.name, renderConfigFields(datasource, DATASOURCE_FIELDS));
     })
     .join('\n');
 }
@@ -211,13 +215,14 @@ export function renderDatasources(datasources: DataSource[]): string {
  * @returns string with rendered Generator Blocks
  */
 export function renderGenerators(generators: GeneratorConfig[]): string {
+  console.log(generators[0])
   return generators
     .map((generator: any) => {
       generator = {
         ...generator,
         ...generator.config
       };
-      return renderBlock('generator', generator.name, renderConfigFields(generator));
+      return renderBlock('generator', generator.name, renderConfigFields(generator, GENERATOR_FIELDS));
     })
     .join('\n');
 }
