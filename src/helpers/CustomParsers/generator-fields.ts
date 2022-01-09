@@ -15,9 +15,9 @@ export default function parseDatasourceFields(blockName: string, lines: string[]
     } else {
       lineData['value'] = {
         fromEnvVar: null,
-        value: value.indexOf('[') 
-            ? value.split('[')[1].split(']')[0].split(',') 
-            : value.split('"')[1]
+        value: value.indexOf('[')
+          ? value.split('[')[1].split(']')[0].split(',')
+          : value.split('"')[1]
       };
     }
     return lineData;

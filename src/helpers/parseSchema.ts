@@ -46,7 +46,7 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
         }, {} as DataSource & { [custom: string]: any })
       };
     });
-   
+
     // Prisma doesn't give us the field mappings
     const modelMappedFields = getModelFieldMappings(datamodel);
     // Prisma also doesn't give us the indexes

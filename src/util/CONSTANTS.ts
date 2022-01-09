@@ -9,4 +9,4 @@ export const ERRORS = {
 export const VALID_FIELD_KINDS = ['scalar', 'object', 'enum'];
 
 export const UNSUPPORTED_DATASOURCE_FIELDS = ['shadowDatabaseUrl', 'referentialIntegrity'];
-export const UNSUPPORTED_GENERATOR_FIELDS = ['previewFeatures', 'engineType', 'binaryTargets']
+export const UNSUPPORTED_GENERATOR_FIELDS = ['previewFeatures', 'engineType', 'binaryTargets'];
