@@ -7,7 +7,7 @@ import getModelFieldMappings from './getModelFieldMappings';
 import getModelFieldIndexes from './getModelFieldIndexes';
 import parseDatasourceFields from './CustomParsers/datasource-fields';
 import parseBlocks from './CustomParsers/parse-blocks';
-import { UNSUPPORTED_DATASOURCE_FIELDS, UNSUPPORTED_GENERATOR_FIELDS } from '../util/CONSTANTS';
+import { UNSUPPORTED_DATASOURCE_FIELDS } from '../util/CONSTANTS';
 import { EnvValue, DataSource } from '@prisma/generator-helper';
 
 import path from 'path';
