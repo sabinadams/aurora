@@ -10,8 +10,9 @@ datasource db {
 generator client {
   provider        = "prisma-client-js"
   output          = "../src/generated"
-  binaryTargets = [{"fromEnvVar":null,"value":"native"}]
+  binaryTargets   = ["native"]
   previewFeatures = ["referentialIntegrity"]
+  engineType      = "library"
 }
 
 model User {

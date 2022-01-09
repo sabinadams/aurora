@@ -7,7 +7,7 @@ import getModelFieldMappings from './getModelFieldMappings';
 import getModelFieldIndexes from './getModelFieldIndexes';
 import parseDatasourceFields from './CustomParsers/datasource-fields';
 import parseBlocks from './CustomParsers/parse-blocks';
-import { UNSUPPORTED_DATASOURCE_FIELDS } from '../util/CONSTANTS';
+import { UNSUPPORTED_DATASOURCE_FIELDS, UNSUPPORTED_GENERATOR_FIELDS } from '../util/CONSTANTS';
 import { EnvValue, DataSource } from '@prisma/generator-helper';
 
 import path from 'path';
@@ -46,7 +46,7 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
         }, {} as DataSource & { [custom: string]: any })
       };
     });
-
+   
     // Prisma doesn't give us the field mappings
     const modelMappedFields = getModelFieldMappings(datamodel);
     // Prisma also doesn't give us the indexes

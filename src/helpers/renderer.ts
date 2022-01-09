@@ -156,18 +156,31 @@ export function renderDatasources(datasources: DataSource[]): string {
         datasource.name,
         Object.keys(datasource)
           .filter((key) => key !== 'name')
+          .filter((key) => datasource[key])
           .map((field) => {
             let value = '';
-            let isEnvVar = datasource[field].fromEnvVar ? true : false;
+            let isEnvVar = false 
 
             if (typeof datasource[field] == 'string') {
               value = datasource[field];
+            } else if (Array.isArray(datasource[field])) {
+              value = `[${datasource[field].map( (val: any) => {
+                let fieldIsEnvVar = false
+                if (typeof val == 'string') {
+                  val = `"${val}"`;
+                } else {
+                  fieldIsEnvVar = val.fromEnvVar ? true : false;
+                  val = fieldIsEnvVar ? `env("${val.fromEnvVar}")` : `"${val.value}"`;
+                }
+                return val
+              }).join(',')}]`
             } else {
+              isEnvVar = datasource[field].fromEnvVar ? true : false;
               value = isEnvVar ? datasource[field].fromEnvVar : datasource[field].value;
             }
             return renderAttribute(field, value, {
               env: isEnvVar,
-              quotes: !isEnvVar
+              quotes: !isEnvVar && !Array.isArray(datasource[field])
             });
           })
       );
@@ -182,25 +195,43 @@ export function renderDatasources(datasources: DataSource[]): string {
  */
 export function renderGenerators(generators: GeneratorConfig[]): string {
   return generators
-    .map((generator) => {
-      return renderBlock('generator', generator.name, [
-        renderAttribute('provider', generator.provider.value, { quotes: true }),
-        renderAttribute(
-          'output',
-          generator?.output?.fromEnvVar ? generator.output.fromEnvVar : generator?.output?.value,
-          { env: generator?.output?.fromEnvVar ? true : false, quotes: true }
-        ),
-        renderAttribute(
-          'binaryTargets',
-          generator.binaryTargets.length
-            ? JSON.stringify(generator.binaryTargets as unknown as String[])
-            : null
-        ),
-        renderAttribute(
-          'previewFeatures',
-          generator.previewFeatures.length ? JSON.stringify(generator.previewFeatures) : null
-        )
-      ]);
+    .map((generator: any) => {
+      generator = {
+        ...generator,
+        ...generator.config
+      }
+      return renderBlock(
+        'generator',
+        generator.name,
+        Object.keys(generator)
+          .filter((key) => key !== 'name')
+          .filter((key) => generator[key])
+          .map((field) => {
+            let value = '';
+            let isEnvVar = false
+            if (typeof generator[field] == 'string') {
+              value = generator[field];
+            } else if (Array.isArray(generator[field])) {
+              value = `[${generator[field].map( (val: any) => {
+                let fieldIsEnvVar = false
+                if (typeof val == 'string') {
+                  val = `"${val}"`;
+                } else {
+                  fieldIsEnvVar = val.fromEnvVar ? true : false;
+                  val = fieldIsEnvVar ? `env("${val.fromEnvVar}")` : `"${val.value}"`;
+                }
+                return val
+              }).join(',')}]`
+            } else {
+              isEnvVar = generator[field].fromEnvVar ? true : false;
+              value = isEnvVar ? generator[field].fromEnvVar : generator[field].value;
+            }
+            return renderAttribute(field, value, {
+              env: isEnvVar,
+              quotes: !isEnvVar && !Array.isArray(generator[field])
+            });
+          })
+      );
     })
     .join('\n');
 }
