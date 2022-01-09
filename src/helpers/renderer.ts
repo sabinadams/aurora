@@ -215,7 +215,6 @@ export function renderDatasources(datasources: DataSource[]): string {
  * @returns string with rendered Generator Blocks
  */
 export function renderGenerators(generators: GeneratorConfig[]): string {
-  console.log(generators[0])
   return generators
     .map((generator: any) => {
       generator = {
