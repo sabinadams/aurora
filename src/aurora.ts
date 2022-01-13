@@ -31,14 +31,23 @@ export default async function aurora() {
     (acc: DataSource[], curr: SchemaInformation) => [...acc, ...curr.datasources],
     []
   );
-  const datasources = Array.from(new Set(allDatasources));
-  if (datasources.length > 1) {
+
+  let uniqueDatasources: DataSource[] = [];
+  allDatasources.forEach((datasource) => {
+    if (
+      !uniqueDatasources.some((source) => JSON.stringify(source) === JSON.stringify(datasource))
+    ) {
+      uniqueDatasources.push(datasource);
+    }
+  });
+
+  if (uniqueDatasources.length > 1) {
     console.error(
-      `There were ${datasources.length} different datasources provided. Make sure all of the datasources are the same.`
+      `There were ${uniqueDatasources.length} different datasources provided. Make sure all of the datasources are the same.`
     );
     throw new Error(ERRORS.INVALID_SCHEMA);
   }
-  const datasource = await renderDatasources(datasources);
+  const datasource = await renderDatasources(uniqueDatasources);
 
   // Get all the generators (check if multiple non-unique. If so, error )
   let allGenerators: GeneratorConfig[] = schemas.reduce(

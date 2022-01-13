@@ -1,6 +1,6 @@
 datasource db {
   provider = "sqlserver"
-  url      = env("DATABASE_URL")
+  url      = "sqlserver://"
 }
 
 generator client {
