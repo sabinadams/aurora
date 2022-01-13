@@ -32,12 +32,14 @@ export default async function aurora() {
     []
   );
 
-  let uniqueDatasources: DataSource[] = []
-  allDatasources.forEach( datasource => {
-    if ( !uniqueDatasources.some( source => JSON.stringify(source) === JSON.stringify(datasource))) {
-      uniqueDatasources.push(datasource)
+  let uniqueDatasources: DataSource[] = [];
+  allDatasources.forEach((datasource) => {
+    if (
+      !uniqueDatasources.some((source) => JSON.stringify(source) === JSON.stringify(datasource))
+    ) {
+      uniqueDatasources.push(datasource);
     }
-  })
+  });
 
   if (uniqueDatasources.length > 1) {
     console.error(
