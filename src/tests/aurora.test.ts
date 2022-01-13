@@ -133,7 +133,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@id.prisma'
           ]);
-          expect(generatedSchema).toContain('@@id([id])');
+          expect(generatedSchema).toContain('@@id(fields: [id])');
         });
 
         it('should render an @@id(fields: [])', async () => {
@@ -147,14 +147,14 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@id-name.prisma'
           ]);
-          expect(generatedSchema).toContain('@@id(name: "unique", [id])');
+          expect(generatedSchema).toContain('@@id(name: "unique", fields: [id])');
         });
 
         it('should render an @@id(map: "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@id-map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@id(map: "unique", [id])');
+          expect(generatedSchema).toContain('@@id(map: "unique", fields: [id])');
         });
       });
 
@@ -163,7 +163,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@unique.prisma'
           ]);
-          expect(generatedSchema).toContain('@@unique([id])');
+          expect(generatedSchema).toContain('@@unique(fields: [id])');
         });
 
         it('should render an @@unique(fields: [])', async () => {
@@ -177,14 +177,14 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@unique-name.prisma'
           ]);
-          expect(generatedSchema).toContain('@@unique(name: "unique", [id])');
+          expect(generatedSchema).toContain('@@unique(name: "unique", fields: [id])');
         });
 
         it('should render an @@unique(map: "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@unique-map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@unique(map: "unique", [id])');
+          expect(generatedSchema).toContain('@@unique(map: "unique", fields: [id])');
         });
       });
 
@@ -193,7 +193,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@index.prisma'
           ]);
-          expect(generatedSchema).toContain('@@index([id])');
+          expect(generatedSchema).toContain('@@index(fields: [id])');
         });
 
         it('should render an @@index(fields: [])', async () => {
@@ -207,14 +207,14 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@index-name.prisma'
           ]);
-          expect(generatedSchema).toContain('@@index(name: "unique", [id])');
+          expect(generatedSchema).toContain('@@index(name: "unique", fields: [id])');
         });
 
         it('should render an @@index(map: "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@index-map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@index(map: "unique", [id])');
+          expect(generatedSchema).toContain('@@index(map: "unique", fields: [id])');
         });
       });
 
@@ -223,7 +223,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@map("test")');
+          expect(generatedSchema).toContain('@@map(name: "test")');
         });
 
         it('should render an @@map(name: "")', async () => {
@@ -281,7 +281,7 @@ describe('aurora()', () => {
           expect(generatedSchema).toContain('id String @id(length: 1)');
         });
 
-        it('should render @id(sort: Asc)', async () => {
+        it('should render @id(sort: "Asc")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@id-sort.prisma'
           ]);
@@ -301,14 +301,14 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@default-value.prisma'
           ]);
-          expect(generatedSchema).toContain('id String @id @default(value: "test")');
+          expect(generatedSchema).toContain('id Int @id @default(value: 99)');
         });
 
         it('should render @default(map: "", "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@default-map.prisma'
           ]);
-          expect(generatedSchema).toContain('id String @id @default(map: "mapping", "test")');
+          expect(generatedSchema).toContain('id String @id @default("test", map: "mapping")');
         });
       });
 
@@ -324,7 +324,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@unique-map.prisma'
           ]);
-          expect(generatedSchema).toContain('id Int @id @unique(map: "mapping")');
+          expect(generatedSchema).toContain('@unique(map: "mapping")');
         });
 
         it('should render @unique(length: 1)', async () => {
@@ -347,7 +347,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@relation.prisma'
           ]);
-          expect(generatedSchema).toContain('@relation("UserPost")');
+          expect(generatedSchema).toContain('@relation(name: "UserPost")');
         });
 
         it('should render @relation(fields: [])', async () => {
@@ -384,18 +384,18 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@relation-ondelete.prisma'
           ]);
-          expect(generatedSchema).toContain(
-            '@relation(fields: [id], references: [id], onDelete: Cascade)'
-          );
+          expect(generatedSchema).toContain('onDelete: Cascade');
+          expect(generatedSchema).toContain('fields: [id]');
+          expect(generatedSchema).toContain('references: [id]');
         });
 
         it('should render @relation(onUpdate: action)', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@relation-onupdate.prisma'
           ]);
-          expect(generatedSchema).toContain(
-            '@relation(fields: [id], references: [id], onUpdate: Cascade)'
-          );
+          expect(generatedSchema).toContain('onUpdate: Cascade');
+          expect(generatedSchema).toContain('fields: [id]');
+          expect(generatedSchema).toContain('references: [id]');
         });
 
         it('should render @relation(map: "")', async () => {
@@ -413,14 +413,14 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@map.prisma'
           ]);
-          expect(generatedSchema).toContain('id String @id @map("test")');
+          expect(generatedSchema).toContain('id Int @id @map(name: "test")');
         });
 
         it('should render @map(name: "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@map-name.prisma'
           ]);
-          expect(generatedSchema).toContain('id String @id @map(name: "test")');
+          expect(generatedSchema).toContain('id Int @id @map(name: "test")');
         });
       });
 
@@ -438,7 +438,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@ignore.prisma'
           ]);
-          expect(generatedSchema).not.toContain('name String');
+          expect(generatedSchema).toContain('@ignore');
         });
       });
     });

@@ -1,15 +1,13 @@
 import fs from 'fs';
 import { promisify } from 'util';
 import { getDMMF, getConfig, formatSchema } from '@prisma/sdk';
-import type { DMMF } from '@prisma/client/runtime';
-import type { SchemaInformation, IndexObject } from '../models';
-import getModelFieldMappings from './getModelFieldMappings';
-import getModelFieldIndexes from './getModelFieldIndexes';
+import parseModelFields from './CustomParsers/model-fields';
 import parseDatasourceFields from './CustomParsers/datasource-fields';
 import parseBlocks from './CustomParsers/parse-blocks';
 import { UNSUPPORTED_DATASOURCE_FIELDS } from '../util/CONSTANTS';
-import { EnvValue, DataSource } from '@prisma/generator-helper';
-
+import { EnvValue, DataSource, DMMF } from '@prisma/generator-helper';
+import type { SchemaInformation } from '../models';
+import parseModels from './parseModels';
 import path from 'path';
 const readFile = promisify(fs.readFile);
 
@@ -47,24 +45,20 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
       };
     });
 
-    // Prisma doesn't give us the field mappings
-    const modelMappedFields = getModelFieldMappings(datamodel);
-    // Prisma also doesn't give us the indexes
-    const indexes = getModelFieldIndexes(datamodel);
-
-    // Take our field mappings and inject a key on each model with our column name value
-    const models = dmmf.datamodel.models.map((model) => {
-      model.fields = model.fields.map((field) => {
-        if (modelMappedFields[model.name][field.name])
-          field.columnName = modelMappedFields[model.name][field.name];
-        return field;
-      });
-      model.indexes = indexes[model.name];
-      return model;
-    }) as DMMF.Model[];
+    // Parses the models manually to grab extra data we need from them that DMMF doesn't provide
+    const modelData = parseModels(datamodel);
+    const attributeData = parseModelFields(modelData);
 
     return {
-      models: models as unknown as (DMMF.Model & { indexes: IndexObject[] })[],
+      models: dmmf.datamodel.models.map((model) => {
+        model.extendedFields = attributeData[model.name].filter(
+          (attribute) => attribute.isFieldAttribute
+        );
+        model.extendedModelAttributes = attributeData[model.name].filter(
+          (attribute) => attribute.isModelAttribute
+        );
+        return model;
+      }) as DMMF.Model[],
       enums: dmmf.datamodel.enums,
       datasources: config.datasources,
       generators: config.generators

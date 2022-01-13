@@ -1,3 +1,0 @@
-model Test {
-    @@index(name: "testIndex", [test, id])
-}

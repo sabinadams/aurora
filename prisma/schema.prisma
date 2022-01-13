@@ -1,18 +1,20 @@
 datasource db {
-  provider             = "sqlite"
-  url                  = env("DATABASE_URL")
-  shadowDatabaseUrl    = "file:./shadow.db"
-  referentialIntegrity = "prisma"
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../src/generated"
-  previewFeatures = ["referentialIntegrity"]
-  engineType      = "library"
-  binaryTargets   = ["native"]
+  provider = "prisma-client-js"
 }
 
+model Test {
+  id  Int @id @default(autoincrement())
+  user User?
+}
 model User {
-  id Int @id @default(autoincrement())
+  id        Int
+  firstName Int @map("fname")
+  test Test @relation(fields: [firstName], references: [id])
+
+  @@index([id])
 }

@@ -102,282 +102,282 @@ describe('Renderer Functions', () => {
     });
   });
 
-  describe('renderModels()', () => {
-    const baseModel = {
-      fields: [],
-      uniqueFields: [],
-      dbName: '',
-      idFields: null,
-      primaryKey: null,
-      name: 'Tester'
-    };
-    const baseField = {
-      name: 'id',
-      kind: 'scalar',
-      type: 'Int',
-      isList: false,
-      isRequired: true,
-      isId: false,
-      isUnique: false,
-      isUpdatedAt: false,
-      columnName: '',
-      hasDefaultValue: false,
-      relationName: '',
-      relationFromFields: ['id'],
-      relationToFields: ['otherId']
-    };
-    it('should render a model', () => {
-      const modelString = renderModels([baseModel] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('model Tester');
-    });
+  // describe('renderModels()', () => {
+  //   const baseModel = {
+  //     fields: [],
+  //     uniqueFields: [],
+  //     dbName: '',
+  //     idFields: null,
+  //     primaryKey: null,
+  //     name: 'Tester'
+  //   };
+  //   const baseField = {
+  //     name: 'id',
+  //     kind: 'scalar',
+  //     type: 'Int',
+  //     isList: false,
+  //     isRequired: true,
+  //     isId: false,
+  //     isUnique: false,
+  //     isUpdatedAt: false,
+  //     columnName: '',
+  //     hasDefaultValue: false,
+  //     relationName: '',
+  //     relationFromFields: ['id'],
+  //     relationToFields: ['otherId']
+  //   };
+  //   it('should render a model', () => {
+  //     const modelString = renderModels([baseModel] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('model Tester');
+  //   });
 
-    it('should render an @@index', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [baseField],
-          indexes: [
-            {
-              name: 'test',
-              fields: ['id', 'firstName']
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('@@index(name: "test", [id, firstName])');
-    });
+  //   it('should render an @@index', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [baseField],
+  //         indexes: [
+  //           {
+  //             name: 'test',
+  //             fields: ['id', 'firstName']
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('@@index(name: "test", [id, firstName])');
+  //   });
 
-    it('should render a field', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [baseField]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int');
-    });
+  //   it('should render a field', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [baseField]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int');
+  //   });
 
-    it('should render a field mapping', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              columnName: 'something'
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @map("something")');
-    });
+  //   it('should render a field mapping', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             columnName: 'something'
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @map("something")');
+  //   });
 
-    it('should signify an optional field', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              isRequired: false
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int?');
-    });
+  //   it('should signify an optional field', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             isRequired: false
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int?');
+  //   });
 
-    it('should signify a list field', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              isList: true
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int[]');
-    });
+  //   it('should signify a list field', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             isList: true
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int[]');
+  //   });
 
-    it('should signify an id field', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              isId: true
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @id');
-    });
+  //   it('should signify an id field', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             isId: true
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @id');
+  //   });
 
-    it('should signify an unique field', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              isUnique: true
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @unique');
-    });
+  //   it('should signify an unique field', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             isUnique: true
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @unique');
+  //   });
 
-    it('should signify an updatedAt field', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              isUpdatedAt: true
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @updatedAt');
-    });
+  //   it('should signify an updatedAt field', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             isUpdatedAt: true
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @updatedAt');
+  //   });
 
-    it('should generate a table field name mapping where', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              columnName: 'TestUpdated'
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @map("TestUpdated")');
-    });
+  //   it('should generate a table field name mapping where', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             columnName: 'TestUpdated'
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @map("TestUpdated")');
+  //   });
 
-    it('should generate a table field with default numeric value', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              hasDefaultValue: true,
-              default: 0
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @default(0)');
-    });
+  //   it('should generate a table field with default numeric value', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             hasDefaultValue: true,
+  //             default: 0
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @default(0)');
+  //   });
 
-    it('should generate a table field with quoted default value if non-number', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              hasDefaultValue: true,
-              default: 'test'
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @default("test")');
-    });
+  //   it('should generate a table field with quoted default value if non-number', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             hasDefaultValue: true,
+  //             default: 'test'
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @default("test")');
+  //   });
 
-    it('should generate a table field default as a function with params if an object provided', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              hasDefaultValue: true,
-              default: {
-                name: 'autoincrement',
-                args: ['2']
-              }
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @default(autoincrement(2))');
-    });
+  //   it('should generate a table field default as a function with params if an object provided', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             hasDefaultValue: true,
+  //             default: {
+  //               name: 'autoincrement',
+  //               args: ['2']
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @default(autoincrement(2))');
+  //   });
 
-    it('should generate a table field relation with to/from attributes if provided', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              relationName: 'PostToUser'
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
+  //   it('should generate a table field relation with to/from attributes if provided', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             relationName: 'PostToUser'
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
 
-      expect(modelString).toContain(
-        'id Int @relation(name: "PostToUser", fields: [id], references: [otherId])'
-      );
-    });
+  //     expect(modelString).toContain(
+  //       'id Int @relation(name: "PostToUser", fields: [id], references: [otherId])'
+  //     );
+  //   });
 
-    it('should generate a table field relation with just a name if provided', () => {
-      const modelString = renderModels([
-        {
-          ...baseModel,
-          fields: [
-            {
-              ...baseField,
-              relationName: 'PostToUser',
-              relationFromFields: [],
-              relationToFields: []
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('id Int @relation(name: "PostToUser")');
-    });
+  //   it('should generate a table field relation with just a name if provided', () => {
+  //     const modelString = renderModels([
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           {
+  //             ...baseField,
+  //             relationName: 'PostToUser',
+  //             relationFromFields: [],
+  //             relationToFields: []
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('id Int @relation(name: "PostToUser")');
+  //   });
 
-    it('should be able to generate multiple models', () => {
-      const modelString = renderModels([
-        baseModel,
-        {
-          ...baseModel,
-          name: 'Second'
-        }
-      ] as unknown as DMMF.Model[]);
-      expect(modelString).toContain('model Tester');
-      expect(modelString).toContain('model Second');
-    });
-    it('should be able to generate multiple fields', () => {
-      const modelString = renderModels([
-        baseModel,
-        {
-          ...baseModel,
-          fields: [
-            baseField,
-            {
-              ...baseField,
-              name: 'otherId'
-            }
-          ]
-        }
-      ] as unknown as DMMF.Model[]);
+  //   it('should be able to generate multiple models', () => {
+  //     const modelString = renderModels([
+  //       baseModel,
+  //       {
+  //         ...baseModel,
+  //         name: 'Second'
+  //       }
+  //     ] as unknown as DMMF.Model[]);
+  //     expect(modelString).toContain('model Tester');
+  //     expect(modelString).toContain('model Second');
+  //   });
+  //   it('should be able to generate multiple fields', () => {
+  //     const modelString = renderModels([
+  //       baseModel,
+  //       {
+  //         ...baseModel,
+  //         fields: [
+  //           baseField,
+  //           {
+  //             ...baseField,
+  //             name: 'otherId'
+  //           }
+  //         ]
+  //       }
+  //     ] as unknown as DMMF.Model[]);
 
-      expect(modelString).toContain('id Int');
-      expect(modelString).toContain('otherId Int');
-    });
-  });
+  //     expect(modelString).toContain('id Int');
+  //     expect(modelString).toContain('otherId Int');
+  //   });
+  // });
 
   describe('renderEnums()', () => {
     const baseField = {

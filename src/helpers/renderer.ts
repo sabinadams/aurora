@@ -1,5 +1,7 @@
 import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
 import { VALID_FIELD_KINDS, DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
+import { ModelAttribute } from '../models';
+
 /**
  *
  * @param type Prisma block's type
@@ -202,9 +204,13 @@ export function renderDatasources(datasources: DataSource[]): string {
     .map((datasource: any) => {
       // Fix naming differences
       datasource['provider'] = datasource.activeProvider;
-      
+
       // Render the block
-      return renderBlock('datasource', datasource.name, renderConfigFields(datasource, DATASOURCE_FIELDS));
+      return renderBlock(
+        'datasource',
+        datasource.name,
+        renderConfigFields(datasource, DATASOURCE_FIELDS)
+      );
     })
     .join('\n');
 }
@@ -221,9 +227,45 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
         ...generator,
         ...generator.config
       };
-      return renderBlock('generator', generator.name, renderConfigFields(generator, GENERATOR_FIELDS));
+      return renderBlock(
+        'generator',
+        generator.name,
+        renderConfigFields(generator, GENERATOR_FIELDS)
+      );
     })
     .join('\n');
+}
+
+function renderModelAttribute(attribute: ModelAttribute): string {
+  const pieces = [
+    `${attribute.attributeType}(`,
+    [
+      ...(attribute.default ? [attribute.default] : []),
+      ...(attribute.name ? [`name:"${attribute.name}"`] : []),
+      ...(attribute.map ? [`map:"${attribute.map}"`] : []),
+      ...(attribute.sort ? [`sort:${attribute.sort}`] : []),
+      ...(attribute.onDelete ? [`onDelete: ${attribute.onDelete}`] : []),
+      ...(attribute.onUpdate ? [`onUpdate: ${attribute.onUpdate}`] : []),
+      ...(attribute.value ? [`value:${attribute.value}`] : []),
+      ...(attribute.length ? [`length: ${attribute.length}`] : []),
+      ...(attribute.fields ? [`fields: [${attribute.fields.join(',')}]`] : []),
+      ...(attribute.references ? [`references: [${attribute.references.join(',')}]`] : [])
+    ]
+      .filter((chunk) => chunk.length)
+      .join(', '),
+    ')'
+  ];
+  return pieces.join('');
+}
+
+function renderModelField(field: DMMF.Field) {
+  const pieces = [
+    field.name,
+    `${field.type}${field.optional ? '?' : ''}${field.scalar ? '[]' : ''}`,
+    ...field.attributesFixed.map(renderModelAttribute)
+  ];
+
+  return pieces.join(' ');
 }
 
 /**
@@ -235,20 +277,14 @@ export function renderModels(models: DMMF.Model[]): string {
   // Need to also render unique fields
   return models
     .map((model) => {
-      let items = model.fields.map(renderField);
+      // console.dir(model.extendedFields, { depth: 3})
+      let items = model.extendedFields.map(renderModelField);
 
-      // Unique fields
-      if (model.uniqueFields) items.push(...model.uniqueFields.map(renderUniqueField));
-
-      // Indexes
-      if (model.indexes) items.push(...model.indexes.map(renderIndex));
-
-      // If there is a table name mapping, add it
-      if (model?.dbName?.length) items.push(`@@map("${model.dbName}")`);
-
-      // ID/PK  ( idFields is backwards compatibility for prisma versions below v.2.30.0)
-      if (model.idFields || model.primaryKey)
-        items.push(renderIdOrPk(model?.idFields || model?.primaryKey?.fields));
+      // Render Attribute blocks (data retrieved from custom parser because Prisma's DMMF doesn't provide all the data we need)
+      const modelAttrs = model.extendedModelAttributes
+        .map((attr: any) => attr.attributesFixed)
+        .flat(2);
+      items.push(...modelAttrs.map((attribute: any) => renderModelAttribute(attribute)));
 
       return renderBlock('model', model.name, items);
     })

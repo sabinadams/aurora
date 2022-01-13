@@ -1,7 +1,6 @@
 import { parseSchema, getAuroraConfigJSON, combineModels, writeSchema } from './helpers';
 import { AuroraConfig, SchemaInformation } from './models';
-import type { DMMF } from '@prisma/client/runtime';
-import type { DataSource, GeneratorConfig } from '@prisma/generator-helper';
+import type { DataSource, GeneratorConfig, DMMF } from '@prisma/generator-helper';
 import { ERRORS } from './util/CONSTANTS';
 import { renderDatasources, renderGenerators, renderModels, renderEnums } from './helpers/renderer';
 import { formatSchema } from '@prisma/sdk';
@@ -9,7 +8,6 @@ import { formatSchema } from '@prisma/sdk';
 export default async function aurora() {
   // Grab the aurora configuration options from config file
   const config: AuroraConfig = await getAuroraConfigJSON();
-
   // Parse out the information from each prisma file
   const schemas: SchemaInformation[] = await Promise.all(config.files.map(parseSchema));
 

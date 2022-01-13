@@ -13,20 +13,17 @@ describe('Parse Schema Function', () => {
     it('Should find @map attributes', async () => {
       const { models } = await parseSchema('./src/tests/schemas/parseSchema.prisma');
       const model = models.find((model) => model.name === 'User');
-      const field = model?.fields.find((field) => field.name === 'firstName');
+      const field = model?.extendedFields.find((field: any) => field.name === 'firstName');
 
-      expect(field?.columnName).toBe('first_name');
+      expect(field?.attributesFixed[0].name).toBe('first_name');
     });
 
     it('Should find @@index attributes', async () => {
       const { models } = await parseSchema('./src/tests/schemas/parseSchema.prisma');
       const model = models.find((model) => model.name === 'Person');
-
-      expect(model?.indexes.length).toBe(1);
-      expect(model?.indexes[0]).toEqual({
-        name: null,
-        fields: ['id']
-      });
+      expect(model?.extendedModelAttributes.length).toBe(1);
+      expect(model?.extendedModelAttributes[0].name).toBe(null);
+      expect(model?.extendedModelAttributes[0].attributesFixed[0].fields).toEqual(['id']);
     });
   });
 });
