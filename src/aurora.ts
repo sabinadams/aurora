@@ -10,14 +10,11 @@ export default async function aurora() {
   const config: AuroraConfig = await getAuroraConfigJSON();
   // Parse out the information from each prisma file
   const schemas: SchemaInformation[] = await Promise.all(config.files.map(parseSchema));
-  
+
   // Get a list of all the models
   let models: string = renderModels(
     combineModels(
-      schemas.reduce(
-        (acc: DMMF.Model[], curr: SchemaInformation) => [...acc, ...curr.models],
-        []
-      )
+      schemas.reduce((acc: DMMF.Model[], curr: SchemaInformation) => [...acc, ...curr.models], [])
     )
   );
 

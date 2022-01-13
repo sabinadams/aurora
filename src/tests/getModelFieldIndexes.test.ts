@@ -1,4 +1,3 @@
-import getModelFieldIndexes from '../helpers/getModelFieldIndexes';
 import readFile from './helpers/readFile';
 
 describe('getModelFieldIndexes()', () => {

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { promisify } from 'util';
 import { getDMMF, getConfig, formatSchema } from '@prisma/sdk';
-import parseModelFields from './CustomParsers/model-fields'
+import parseModelFields from './CustomParsers/model-fields';
 import parseDatasourceFields from './CustomParsers/datasource-fields';
 import parseBlocks from './CustomParsers/parse-blocks';
 import { UNSUPPORTED_DATASOURCE_FIELDS } from '../util/CONSTANTS';
@@ -25,7 +25,7 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
     // Grabs the DMMF and Config data using Prisma's SDK
     const dmmf = await getDMMF({ datamodel });
     const config = await getConfig({ datamodel });
-    
+
     // We need to get some custom values out since DMMF doesn't provide them
     const datasourceBlocksFields: { blockName: string; name: string; value: EnvValue }[][] =
       parseBlocks('datasource', datamodel, parseDatasourceFields);
@@ -46,14 +46,18 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
     });
 
     // Parses the models manually to grab extra data we need from them that DMMF doesn't provide
-    const modelData = parseModels( datamodel )
-    const attributeData = parseModelFields( modelData )
+    const modelData = parseModels(datamodel);
+    const attributeData = parseModelFields(modelData);
 
     return {
-      models: dmmf.datamodel.models.map( model => {
-        model.extendedFields = attributeData[model.name].filter( attribute => attribute.isFieldAttribute )
-        model.extendedModelAttributes = attributeData[model.name].filter( attribute => attribute.isModelAttribute )
-        return model
+      models: dmmf.datamodel.models.map((model) => {
+        model.extendedFields = attributeData[model.name].filter(
+          (attribute) => attribute.isFieldAttribute
+        );
+        model.extendedModelAttributes = attributeData[model.name].filter(
+          (attribute) => attribute.isModelAttribute
+        );
+        return model;
       }) as DMMF.Model[],
       enums: dmmf.datamodel.enums,
       datasources: config.datasources,

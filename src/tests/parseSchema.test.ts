@@ -22,8 +22,8 @@ describe('Parse Schema Function', () => {
       const { models } = await parseSchema('./src/tests/schemas/parseSchema.prisma');
       const model = models.find((model) => model.name === 'Person');
       expect(model?.extendedModelAttributes.length).toBe(1);
-      expect(model?.extendedModelAttributes[0].name).toBe(null)
-      expect(model?.extendedModelAttributes[0].attributesFixed[0].fields).toEqual(['id'])
+      expect(model?.extendedModelAttributes[0].name).toBe(null);
+      expect(model?.extendedModelAttributes[0].attributesFixed[0].fields).toEqual(['id']);
     });
   });
 });

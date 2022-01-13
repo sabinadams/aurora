@@ -386,7 +386,7 @@ describe('aurora()', () => {
           ]);
           expect(generatedSchema).toContain('onDelete: Cascade');
           expect(generatedSchema).toContain('fields: [id]');
-          expect(generatedSchema).toContain('references: [id]')
+          expect(generatedSchema).toContain('references: [id]');
         });
 
         it('should render @relation(onUpdate: action)', async () => {
@@ -395,7 +395,7 @@ describe('aurora()', () => {
           ]);
           expect(generatedSchema).toContain('onUpdate: Cascade');
           expect(generatedSchema).toContain('fields: [id]');
-          expect(generatedSchema).toContain('references: [id]')
+          expect(generatedSchema).toContain('references: [id]');
         });
 
         it('should render @relation(map: "")', async () => {

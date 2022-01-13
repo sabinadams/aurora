@@ -1,6 +1,6 @@
 import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
 import { VALID_FIELD_KINDS, DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
-import { ModelAttribute } from '../models'
+import { ModelAttribute } from '../models';
 
 /**
  *
@@ -204,9 +204,13 @@ export function renderDatasources(datasources: DataSource[]): string {
     .map((datasource: any) => {
       // Fix naming differences
       datasource['provider'] = datasource.activeProvider;
-      
+
       // Render the block
-      return renderBlock('datasource', datasource.name, renderConfigFields(datasource, DATASOURCE_FIELDS));
+      return renderBlock(
+        'datasource',
+        datasource.name,
+        renderConfigFields(datasource, DATASOURCE_FIELDS)
+      );
     })
     .join('\n');
 }
@@ -223,16 +227,20 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
         ...generator,
         ...generator.config
       };
-      return renderBlock('generator', generator.name, renderConfigFields(generator, GENERATOR_FIELDS));
+      return renderBlock(
+        'generator',
+        generator.name,
+        renderConfigFields(generator, GENERATOR_FIELDS)
+      );
     })
     .join('\n');
 }
 
-function renderModelAttribute( attribute: ModelAttribute ): string {
+function renderModelAttribute(attribute: ModelAttribute): string {
   const pieces = [
     `${attribute.attributeType}(`,
     [
-      ...(attribute.default ? [attribute.default]: []),
+      ...(attribute.default ? [attribute.default] : []),
       ...(attribute.name ? [`name:"${attribute.name}"`] : []),
       ...(attribute.map ? [`map:"${attribute.map}"`] : []),
       ...(attribute.sort ? [`sort:${attribute.sort}`] : []),
@@ -242,20 +250,22 @@ function renderModelAttribute( attribute: ModelAttribute ): string {
       ...(attribute.length ? [`length: ${attribute.length}`] : []),
       ...(attribute.fields ? [`fields: [${attribute.fields.join(',')}]`] : []),
       ...(attribute.references ? [`references: [${attribute.references.join(',')}]`] : [])
-    ].filter( chunk => chunk.length ).join(', '),
+    ]
+      .filter((chunk) => chunk.length)
+      .join(', '),
     ')'
-  ]
-  return pieces.join('')
+  ];
+  return pieces.join('');
 }
 
-function renderModelField( field: DMMF.Field ) {
+function renderModelField(field: DMMF.Field) {
   const pieces = [
     field.name,
     `${field.type}${field.optional ? '?' : ''}${field.scalar ? '[]' : ''}`,
     ...field.attributesFixed.map(renderModelAttribute)
-  ]
+  ];
 
-  return pieces.join(' ')
+  return pieces.join(' ');
 }
 
 /**
@@ -271,11 +281,11 @@ export function renderModels(models: DMMF.Model[]): string {
       let items = model.extendedFields.map(renderModelField);
 
       // Render Attribute blocks (data retrieved from custom parser because Prisma's DMMF doesn't provide all the data we need)
-      const modelAttrs = model.extendedModelAttributes.map( (attr: any) => attr.attributesFixed ).flat(2)
-      items.push(...modelAttrs.map( 
-        (attribute: any) => renderModelAttribute(attribute)
-      ))
-      
+      const modelAttrs = model.extendedModelAttributes
+        .map((attr: any) => attr.attributesFixed)
+        .flat(2);
+      items.push(...modelAttrs.map((attribute: any) => renderModelAttribute(attribute)));
+
       return renderBlock('model', model.name, items);
     })
     .join('\n');
