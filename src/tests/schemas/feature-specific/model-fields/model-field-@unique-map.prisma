@@ -8,5 +8,5 @@ generator client {
 }
 
 model User {
-  id Int @unique(map: "test")
+  id Int @unique(map: "mapping")
 }

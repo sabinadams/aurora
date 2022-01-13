@@ -11,6 +11,7 @@ export default function parseBlocks(
   const datasourceChunk = schema
     .split('}')
     .filter((chunk) => chunk.trim().indexOf(blockType) === 0);
+    
   return datasourceChunk.map((blockChunk) => {
     // Split the model chunk by line to get the individual fields
     // The first line will have a model name which we will pull out later
