@@ -12,6 +12,8 @@ describe('combineModels()', () => {
     dbName: '',
     uniqueFields: [],
     uniqueIndexes: [],
+    extendedFields: [],
+    extendedModelAttributes: [],
     primaryKey: ''
   } as unknown as DMMF.Model;
 

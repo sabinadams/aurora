@@ -17,9 +17,17 @@ export function combineModels(rawModels: DMMF.Model[]): DMMF.Model[] {
             fields.push(field);
           }
           return fields;
-        }, curr.fields);
+        }, curr.extendedFields);
 
         acc[curr.name].extendedModelAttributes = acc[curr.name].extendedModelAttributes.reduce((fields: any[], field: any) => {
+          // If we don't already have this field
+          if (!fields.map((field) => field.name).includes(field.name)) {
+            fields.push(field);
+          }
+          return fields;
+        }, curr.extendedModelAttributes);
+
+        acc[curr.name].fields = acc[curr.name].fields.reduce((fields: any[], field: any) => {
           // If we don't already have this field
           if (!fields.map((field) => field.name).includes(field.name)) {
             fields.push(field);

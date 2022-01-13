@@ -16,6 +16,5 @@ model User {
   firstName Int @map("fname")
   test Test @relation(fields: [firstName], references: [id])
 
-  @@id(name: "uniqueId", map: "mapped", fields: [id])
-  @@map("lskdjfs")
+  @@index([id])
 }
