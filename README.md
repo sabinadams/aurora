@@ -50,7 +50,15 @@ Once installed, create a file named `aurora.config.json`. This is what Aurora us
 
 <br>
 
-Inside your project, you can now run the command `aurora` from the directory where your config file lives, which will take all of the `.prisma` files you included in your configuration, combine them, and output them into the specified output file.
+#### Running Aurora
+
+Inside your project, you can now run the following command from the directory where your config file lives:
+
+```sh
+aurora
+```
+
+This will take all of the `.prisma` files you included in your configuration, combine them, and output them into the specified output file.
 
 ## How Merging Works
 
