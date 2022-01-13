@@ -7,3 +7,6 @@ export declare const ERRORS: {
     INVALID_SCHEMA: string;
 };
 export declare const VALID_FIELD_KINDS: string[];
+export declare const UNSUPPORTED_DATASOURCE_FIELDS: string[];
+export declare const DATASOURCE_FIELDS: string[];
+export declare const GENERATOR_FIELDS: string[];

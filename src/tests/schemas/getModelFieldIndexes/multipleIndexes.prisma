@@ -1,4 +1,0 @@
-model Test {
-    @@index([firstName])
-    @@index(name: "test", [test, id])
-}
