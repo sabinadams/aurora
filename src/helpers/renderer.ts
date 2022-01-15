@@ -237,8 +237,8 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
 }
 
 function renderModelAttribute(attribute: ModelAttribute): string {
-  const pieces = [
-    `${attribute.attributeType}(`,
+  let pieces = [
+    `${attribute.attributeType}`,
     [
       ...(attribute.default ? [attribute.default] : []),
       ...(attribute.name ? [`name:"${attribute.name}"`] : []),
@@ -252,9 +252,13 @@ function renderModelAttribute(attribute: ModelAttribute): string {
       ...(attribute.references ? [`references: [${attribute.references.join(',')}]`] : [])
     ]
       .filter((chunk) => chunk.length)
-      .join(', '),
-    ')'
-  ];
+      .join(', ')
+  ].filter((chunk) => chunk.length > 1);
+
+  if (pieces.length > 1) {
+    pieces = [pieces[0], '(', ...pieces.slice(1), ')'];
+  }
+
   return pieces.join('');
 }
 
@@ -277,7 +281,6 @@ export function renderModels(models: DMMF.Model[]): string {
   // Need to also render unique fields
   return models
     .map((model) => {
-      // console.dir(model.extendedFields, { depth: 3})
       let items = model.extendedFields.map(renderModelField);
 
       // Render Attribute blocks (data retrieved from custom parser because Prisma's DMMF doesn't provide all the data we need)
