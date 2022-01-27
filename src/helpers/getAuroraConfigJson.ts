@@ -3,6 +3,7 @@ import fs from 'fs';
 import { promisify } from 'util';
 import type { AuroraConfig } from '../models';
 import { CONFIG_FILE_NAME, ERRORS } from '../util/CONSTANTS';
+import { expandGlobPatterns } from './expandGlobPatterns';
 
 const readFile = promisify(fs.readFile);
 
@@ -22,7 +23,7 @@ export async function getAuroraConfigJSON(): Promise<AuroraConfig> {
     // Ensure all of the fields were provided and are valid
     validateConfigurationObject(config);
 
-    return JSON.parse(jsonString);
+    return expandGlobPatterns(config);
   } catch (e) {
     console.error(
       `Aurora could not load ${CONFIG_FILE_NAME}. Please make sure this file exists and is valid.`
