@@ -451,4 +451,73 @@ describe('aurora()', () => {
       expect(generatedSchema).toContain('TestValue');
     });
   });
+
+  describe('Glob Config', () => {
+    it('should render global Glob Files', async () => {
+      const generatedSchema = await getGeneratedSchema(['glob-test/**/*.prisma']);
+
+      expect(generatedSchema).toContain('generator client');
+      expect(generatedSchema).toContain('datasource db');
+      expect(generatedSchema).toContain('model Person');
+      expect(generatedSchema).toContain('model User');
+      expect(generatedSchema).toContain('enum Environment');
+      expect(generatedSchema).toContain('enum Test');
+    });
+
+    it('should render individual Glob Files', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'glob-test/providers/*.prisma',
+        'glob-test/enums/*.prisma',
+        'glob-test/models/*.prisma'
+      ]);
+
+      expect(generatedSchema).toContain('generator client');
+      expect(generatedSchema).toContain('datasource db');
+      expect(generatedSchema).toContain('model Person');
+      expect(generatedSchema).toContain('model User');
+      expect(generatedSchema).toContain('enum Environment');
+      expect(generatedSchema).toContain('enum Test');
+    });
+
+    it('should render mixed Glob Files', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'glob-test/providers/datasource.prisma',
+        'glob-test/models/*.prisma',
+        'glob-test/enums/environment.prisma'
+      ]);
+
+      expect(generatedSchema).not.toContain('generator client');
+      expect(generatedSchema).toContain('datasource db');
+      expect(generatedSchema).toContain('model Person');
+      expect(generatedSchema).toContain('model User');
+      expect(generatedSchema).toContain('enum Environment');
+      expect(generatedSchema).not.toContain('enum Test');
+    });
+
+    it('should throw imaginary Glob Files', async () => {
+      // let error = null;
+      // try {
+      //   await getGeneratedSchema([
+      //     'glob-test/providers/*.prisma',
+      //     'glob-test/enums/*.prisma',
+      //     'glob-test/models/*.prisma',
+      //     'glob-test/nonexistent/*.prisma'
+      //   ]);
+      // } catch (err: any) {
+      //   error = err;
+      //   // console.log(error.message);
+      // }
+      // expect(error).not.toBeNull();
+      // expect(error.message).toContain('ENOENT: no such file or directory');
+
+      await expect(
+        getGeneratedSchema([
+          'glob-test/providers/*.prisma',
+          'glob-test/enums/*.prisma',
+          'glob-test/models/*.prisma',
+          'glob-test/nonexistent/*.prisma'
+        ])
+      ).rejects.toThrowError('ENOENT: no such file or directory');
+    });
+  });
 });

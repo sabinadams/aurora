@@ -3,6 +3,7 @@ import fs from 'fs';
 import { promisify } from 'util';
 import type { AuroraConfig } from '../models';
 import { CONFIG_FILE_NAME, ERRORS } from '../util/CONSTANTS';
+import { expandGlobPatterns } from './expandGlobPatterns';
 
 const readFile = promisify(fs.readFile);
 
@@ -22,7 +23,7 @@ export async function getAuroraConfigJSON(): Promise<AuroraConfig> {
     // Ensure all of the fields were provided and are valid
     validateConfigurationObject(config);
 
-    return JSON.parse(jsonString);
+    return expandGlobPatterns(config);
   } catch (e) {
     console.error(
       `Aurora could not load ${CONFIG_FILE_NAME}. Please make sure this file exists and is valid.`
@@ -51,7 +52,7 @@ const validateConfigurationObject = (config: AuroraConfig) => {
     throw new Error(ERRORS.EMPTY_CONFIG_FILES);
   }
 
-  if (config.files.filter((file) => !file.includes('.prisma')).length) {
+  if (config.files.filter((file) => !file.endsWith('.prisma')).length) {
     console.error(`Invalid File. Only provide paths to .prisma files.`);
     throw new Error(ERRORS.NON_PRISMA_FILE);
   }
@@ -61,7 +62,7 @@ const validateConfigurationObject = (config: AuroraConfig) => {
     throw new Error(ERRORS.NO_OUTPUT_CONFIGURED);
   }
 
-  if (!config.output.includes('.prisma')) {
+  if (!config.output.endsWith('.prisma')) {
     console.error(`The Output file should have the .prisma extension.`);
     throw new Error(ERRORS.NON_PRISMA_FILE);
   }
