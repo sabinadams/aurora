@@ -51,7 +51,7 @@ const validateConfigurationObject = (config: AuroraConfig) => {
     throw new Error(ERRORS.EMPTY_CONFIG_FILES);
   }
 
-  if (config.files.filter((file) => !file.includes('.prisma')).length) {
+  if (config.files.filter((file) => !file.endsWith('.prisma')).length) {
     console.error(`Invalid File. Only provide paths to .prisma files.`);
     throw new Error(ERRORS.NON_PRISMA_FILE);
   }
@@ -61,7 +61,7 @@ const validateConfigurationObject = (config: AuroraConfig) => {
     throw new Error(ERRORS.NO_OUTPUT_CONFIGURED);
   }
 
-  if (!config.output.includes('.prisma')) {
+  if (!config.output.endsWith('.prisma')) {
     console.error(`The Output file should have the .prisma extension.`);
     throw new Error(ERRORS.NON_PRISMA_FILE);
   }
