@@ -517,7 +517,7 @@ describe('aurora()', () => {
           'glob-test/models/*.prisma',
           'glob-test/nonexistent/*.prisma'
         ])
-      ).rejects.toThrowError();
+      ).rejects.toThrowError('ENOENT: no such file or directory');
     });
   });
 });
