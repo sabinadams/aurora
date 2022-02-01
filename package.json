@@ -46,7 +46,7 @@
   "dependencies": {
     "@prisma/client": "^3.7.0",
     "@prisma/sdk": "^3.8.1",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.0",
     "clear": "^0.1.0",
     "commander": "^9.0.0",
     "conf": "^10.1.1",
