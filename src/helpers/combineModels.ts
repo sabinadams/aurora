@@ -17,25 +17,34 @@ export function combineModels(rawModels: DMMF.Model[]): DMMF.Model[] {
             if (!fields.map((field) => field.name).includes(field.name)) {
               fields.push(field);
             } else {
-              const indexOfExisting = fields.findIndex( existingField => existingField.name === field.name )
-              const existing = fields.find( existingField => existingField.name === field.name )
+              const indexOfExisting = fields.findIndex(
+                (existingField) => existingField.name === field.name
+              );
+              const existing = fields.find((existingField) => existingField.name === field.name);
               // Combine the attributes
-              fields[indexOfExisting].attributes = Array.from(new Set([...fields[indexOfExisting].attributes, ...field.attributes]))
+              fields[indexOfExisting].attributes = Array.from(
+                new Set([...fields[indexOfExisting].attributes, ...field.attributes])
+              );
 
               // Get a list of all of the old and new
-              let attributes = [...existing.attributesFixed, ...field.attributesFixed]
+              let attributes = [...existing.attributesFixed, ...field.attributesFixed];
               // Combine them and merge attribute options (some data can be lost here)
-              attributes = Array.from(new Set(attributes.map( attr => {
-                // Get a list of all versions of this attribute
-                const likeAttributes = attributes.filter( likes => attr.attributeType === likes.attributeType )
-                // Merge (can get rid of some conflicting options)
-                attr = Object.assign(attr, ...likeAttributes)
-                // We want a string so we can get unique options in a set
-                return JSON.stringify(attr)
-              }))).map(attr => JSON.parse(attr)) // Now we can parse that string and get JSON again
+              attributes = Array.from(
+                new Set(
+                  attributes.map((attr) => {
+                    // Get a list of all versions of this attribute
+                    const likeAttributes = attributes.filter(
+                      (likes) => attr.attributeType === likes.attributeType
+                    );
+                    // Merge (can get rid of some conflicting options)
+                    attr = Object.assign(attr, ...likeAttributes);
+                    // We want a string so we can get unique options in a set
+                    return JSON.stringify(attr);
+                  })
+                )
+              ).map((attr) => JSON.parse(attr)); // Now we can parse that string and get JSON again
 
-              console.log(attributes)
-              fields[indexOfExisting].attributesFixed = attributes
+              fields[indexOfExisting].attributesFixed = attributes;
             }
             return fields;
           },

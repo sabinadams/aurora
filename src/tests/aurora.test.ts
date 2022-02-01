@@ -245,6 +245,11 @@ describe('aurora()', () => {
     });
 
     describe('Model Fields', () => {
+      it('should merge duplicate fields', async () => {
+        const generatedSchema = await getGeneratedSchema(['duplicates/*.prisma']);
+        expect(generatedSchema).toContain('userId BigInt @id @default(autoincrement())');
+      });
+
       it('should render ?', async () => {
         const generatedSchema = await getGeneratedSchema([
           'feature-specific/model-fields/model-field-?.prisma'
