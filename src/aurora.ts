@@ -49,15 +49,15 @@ export default async function aurora() {
   }
   const datasource = await renderDatasources(uniqueDatasources);
 
-  // Get all the generators (check if multiple non-unique. If so, error )
+  // Get all the generators (check if multiple non-unique. If none, error )
   let allGenerators: GeneratorConfig[] = schemas.reduce(
     (acc: GeneratorConfig[], curr: SchemaInformation) => [...acc, ...curr.generators],
     []
   );
   const generators = Array.from(new Set(allGenerators));
-  if (generators.length > 1) {
+  if (generators.length < 1) {
     console.error(
-      `There were ${generators.length} different generators provided. Make sure all of the generators are the same.`
+      `There were no ${generators.length} generators provided.`
     );
     throw new Error(ERRORS.INVALID_SCHEMA);
   }
