@@ -136,7 +136,6 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
     .join('\n');
 }
 
-
 function renderModelField(field: DMMF.Field) {
   const pieces = [
     field.name,
@@ -153,7 +152,7 @@ function renderModelField(field: DMMF.Field) {
  * @returns string with rendered Model Blocks
  */
 export function renderModels(models: DMMF.Model[]): string {
-  console.dir(models, { depth: 4})
+  console.dir(models, { depth: 4 });
   // Need to also render unique fields
   return models
     .map((model) => {

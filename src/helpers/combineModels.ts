@@ -28,7 +28,6 @@ export function combineModels(rawModels: DMMF.Model[]): DMMF.Model[] {
 
               // Get a list of all of the old and new
               let attributes = [...existing.attributes, ...field.attributes];
-            
 
               fields[indexOfExisting].attributesFixed = attributes;
             }
