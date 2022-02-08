@@ -258,7 +258,7 @@ function renderModelAttribute(attribute: ModelAttribute): string {
   if (pieces.length > 1) {
     pieces = [pieces[0], '(', ...pieces.slice(1), ')'];
   }
-  
+
   return pieces.join('');
 }
 
