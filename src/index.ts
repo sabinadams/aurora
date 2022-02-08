@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import chalk from 'chalk';
+import { default as chalk } from 'chalk';
 import clear from 'clear';
 import * as figlet from 'figlet';
 import { Command } from 'commander';
