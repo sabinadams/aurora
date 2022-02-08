@@ -158,6 +158,15 @@ describe('aurora()', () => {
         });
       });
 
+      describe('@@fulltext', () => {
+        it('should render an @@fulltext([])', async () => {
+          const generatedSchema = await getGeneratedSchema([
+            'feature-specific/models/model-@@fulltext.prisma'
+          ]);
+          expect(generatedSchema).toContain(' @@fulltext([title(sort: Desc), content])');
+        });
+      });
+
       describe('@@unique', () => {
         it('should render an @@unique([])', async () => {
           const generatedSchema = await getGeneratedSchema([
@@ -262,6 +271,15 @@ describe('aurora()', () => {
           'feature-specific/model-fields/model-field-[].prisma'
         ]);
         expect(generatedSchema).toContain('data String[]');
+      });
+
+      describe('@id', () => {
+        it('should render @id', async () => {
+          const generatedSchema = await getGeneratedSchema([
+            'feature-specific/model-fields/model-field-@db.prisma'
+          ]);
+          expect(generatedSchema).toContain('updatedAt DateTime @updatedAt @db.DateTime(6)');
+        });
       });
 
       describe('@id', () => {

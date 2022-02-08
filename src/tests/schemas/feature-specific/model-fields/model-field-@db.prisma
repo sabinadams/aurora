@@ -1,0 +1,13 @@
+datasource db {
+    provider = "mysql"
+    url      = "mysql://"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id        Int      @id
+    updatedAt DateTime @updatedAt @db.DateTime(6)
+}
