@@ -1,1 +1,8 @@
 
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/generated"
+  previewFeatures = ["referentialIntegrity"]
+  engineType      = "library"
+  binaryTargets   = ["binary-target"]
+}

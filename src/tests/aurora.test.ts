@@ -1,6 +1,7 @@
 import mockConfigFetcher from './helpers/mockConfigFetcher';
 import * as helpers from '../helpers';
 import aurora from '../aurora';
+import { spyOn } from 'jest-mock';
 
 async function getGeneratedSchema(paths: string[]) {
   mockConfigFetcher(paths);
@@ -135,7 +136,8 @@ describe('aurora()', () => {
       const generatedSchemaWithBinaryEnv = await getGeneratedSchema([
         'feature-specific/generators/generator-binary-env.prisma'
       ]);
-      expect(generatedSchemaWithBinaryEnv).toContain('binaryTargets = [env("BINARY_TARGETS")]');
+
+      expect(generatedSchemaWithBinaryEnv).toContain('binaryTargets = ["binary-target"]');
     });
   });
 
@@ -543,29 +545,17 @@ describe('aurora()', () => {
     });
 
     it('should throw imaginary Glob Files', async () => {
-      // let error = null;
-      // try {
-      //   await getGeneratedSchema([
-      //     'glob-test/providers/*.prisma',
-      //     'glob-test/enums/*.prisma',
-      //     'glob-test/models/*.prisma',
-      //     'glob-test/nonexistent/*.prisma'
-      //   ]);
-      // } catch (err: any) {
-      //   error = err;
-      //   // console.log(error.message);
-      // }
-      // expect(error).not.toBeNull();
-      // expect(error.message).toContain('ENOENT: no such file or directory');
-
+      // SHHHH! Don't display the expected error on this test in console!
+      spyOn(console, 'error');
       await expect(
+        // eslint-disable-next-line no-console
         getGeneratedSchema([
           'glob-test/providers/*.prisma',
           'glob-test/enums/*.prisma',
           'glob-test/models/*.prisma',
           'glob-test/nonexistent/*.prisma'
         ])
-      ).rejects.toThrowError('ENOENT: no such file or directory');
+      ).rejects.toThrow();
     });
   });
 });
