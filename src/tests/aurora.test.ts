@@ -315,6 +315,13 @@ describe('aurora()', () => {
           ]);
           expect(generatedSchema).toContain('id String @id @default("test", map: "mapping")');
         });
+
+        it('should render @default values that have a string length under 1', async () => {
+          const generatedSchema = await getGeneratedSchema([
+            'feature-specific/model-fields/model-field-@default-0.prisma'
+          ]);
+          expect(generatedSchema).toContain('count Int @default(2)');
+        });
       });
 
       describe('@unique', () => {

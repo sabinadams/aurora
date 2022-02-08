@@ -253,7 +253,7 @@ function renderModelAttribute(attribute: ModelAttribute): string {
     ]
       .filter((chunk) => chunk.length)
       .join(', ')
-  ].filter((chunk) => chunk.length > 1);
+  ].filter((chunk) => chunk.length >= 1);
 
   if (pieces.length > 1) {
     pieces = [pieces[0], '(', ...pieces.slice(1), ')'];
