@@ -56,7 +56,7 @@ export async function parseSchema(filePath: string): Promise<SchemaInformation> 
         );
         model.extendedModelAttributes = attributeData[model.name].filter(
           (attribute) => attribute.isModelAttribute
-        ).map( attr => attr.attributes).flat();
+        ).map( attribute => attribute.attributes).flat();
         return model;
       }) as DMMF.Model[],
       enums: dmmf.datamodel.enums,

@@ -1,5 +1,5 @@
 import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
-import { VALID_FIELD_KINDS, DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
+import { DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
 
 /**
  *
@@ -136,31 +136,6 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
     .join('\n');
 }
 
-function renderModelAttribute(attribute: any): string {
-  let pieces = [
-    `${attribute.attributeType}`,
-    [
-      ...(attribute.default ? [attribute.default] : []),
-      ...(attribute.name ? [`name:"${attribute.name}"`] : []),
-      ...(attribute.map ? [`map:"${attribute.map}"`] : []),
-      ...(attribute.sort ? [`sort:${attribute.sort}`] : []),
-      ...(attribute.onDelete ? [`onDelete: ${attribute.onDelete}`] : []),
-      ...(attribute.onUpdate ? [`onUpdate: ${attribute.onUpdate}`] : []),
-      ...(attribute.value ? [`value:${attribute.value}`] : []),
-      ...(attribute.length ? [`length: ${attribute.length}`] : []),
-      ...(attribute.fields ? [`fields: [${attribute.fields.join(',')}]`] : []),
-      ...(attribute.references ? [`references: [${attribute.references.join(',')}]`] : [])
-    ]
-      .filter((chunk) => chunk.length)
-      .join(', ')
-  ].filter((chunk) => chunk.length >= 1);
-
-  if (pieces.length > 1) {
-    pieces = [pieces[0], '(', ...pieces.slice(1), ')'];
-  }
-
-  return pieces.join('');
-}
 
 function renderModelField(field: DMMF.Field) {
   const pieces = [
