@@ -71,6 +71,24 @@ describe('aurora()', () => {
   });
 
   describe('Generator Blocks', () => {
+    it('should succeed when no generators are present', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/noGenerators.prisma'
+      ]);
+
+      expect(generatedSchema).not.toContain('generator');
+    });
+
+    it('Should succeed when there are multiple generators present', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/multipleGenerators.prisma'
+      ]);
+      // count all the generator statements which look like this:
+      // generator_SOMENAME_{...
+      const count = (generatedSchema.match(/generator\s+\w+\s+\{/g) || []).length;
+      expect(count).toBe(2);
+    });
+
     it('should render generator name', async () => {
       const generatedSchema = await getGeneratedSchema([
         'feature-specific/generators/generator.prisma'
