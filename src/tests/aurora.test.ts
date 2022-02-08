@@ -133,7 +133,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@id.prisma'
           ]);
-          expect(generatedSchema).toContain('@@id(fields: [id])');
+          expect(generatedSchema).toContain('@@id([id])');
         });
 
         it('should render an @@id(fields: [])', async () => {
@@ -147,14 +147,23 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@id-name.prisma'
           ]);
-          expect(generatedSchema).toContain('@@id(name: "unique", fields: [id])');
+          expect(generatedSchema).toContain('@@id(name: "unique", [id])');
         });
 
         it('should render an @@id(map: "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@id-map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@id(map: "unique", fields: [id])');
+          expect(generatedSchema).toContain('@@id(map: "unique", [id])');
+        });
+      });
+
+      describe('@@fulltext', () => {
+        it('should render an @@fulltext([])', async () => {
+          const generatedSchema = await getGeneratedSchema([
+            'feature-specific/models/model-@@fulltext.prisma'
+          ]);
+          expect(generatedSchema).toContain(' @@fulltext([title(sort: Desc), content])');
         });
       });
 
@@ -163,7 +172,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@unique.prisma'
           ]);
-          expect(generatedSchema).toContain('@@unique(fields: [id])');
+          expect(generatedSchema).toContain('@@unique([id])');
         });
 
         it('should render an @@unique(fields: [])', async () => {
@@ -177,14 +186,14 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@unique-name.prisma'
           ]);
-          expect(generatedSchema).toContain('@@unique(name: "unique", fields: [id])');
+          expect(generatedSchema).toContain('@@unique(name: "unique", [id])');
         });
 
         it('should render an @@unique(map: "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@unique-map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@unique(map: "unique", fields: [id])');
+          expect(generatedSchema).toContain('@@unique(map: "unique", [id])');
         });
       });
 
@@ -193,7 +202,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@index.prisma'
           ]);
-          expect(generatedSchema).toContain('@@index(fields: [id])');
+          expect(generatedSchema).toContain('@@index([id])');
         });
 
         it('should render an @@index(fields: [])', async () => {
@@ -207,14 +216,14 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@index-name.prisma'
           ]);
-          expect(generatedSchema).toContain('@@index(name: "unique", fields: [id])');
+          expect(generatedSchema).toContain('@@index(name: "unique", [id])');
         });
 
         it('should render an @@index(map: "")', async () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@index-map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@index(map: "unique", fields: [id])');
+          expect(generatedSchema).toContain('@@index(map: "unique", [id])');
         });
       });
 
@@ -223,7 +232,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/models/model-@@map.prisma'
           ]);
-          expect(generatedSchema).toContain('@@map(name: "test")');
+          expect(generatedSchema).toContain('@@map("test")');
         });
 
         it('should render an @@map(name: "")', async () => {
@@ -262,6 +271,15 @@ describe('aurora()', () => {
           'feature-specific/model-fields/model-field-[].prisma'
         ]);
         expect(generatedSchema).toContain('data String[]');
+      });
+
+      describe('@id', () => {
+        it('should render @id', async () => {
+          const generatedSchema = await getGeneratedSchema([
+            'feature-specific/model-fields/model-field-@db.prisma'
+          ]);
+          expect(generatedSchema).toContain('updatedAt DateTime @updatedAt @db.DateTime(6)');
+        });
       });
 
       describe('@id', () => {
@@ -313,7 +331,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@default-map.prisma'
           ]);
-          expect(generatedSchema).toContain('id String @id @default("test", map: "mapping")');
+          expect(generatedSchema).toContain('id String @id @default(map: "mapping", "test")');
         });
 
         it('should render @default values that have a string length under 1', async () => {
@@ -359,7 +377,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@relation.prisma'
           ]);
-          expect(generatedSchema).toContain('@relation(name: "UserPost")');
+          expect(generatedSchema).toContain('@relation("UserPost")');
         });
 
         it('should render @relation(fields: [])', async () => {
@@ -425,7 +443,7 @@ describe('aurora()', () => {
           const generatedSchema = await getGeneratedSchema([
             'feature-specific/model-fields/model-field-@map.prisma'
           ]);
-          expect(generatedSchema).toContain('id Int @id @map(name: "test")');
+          expect(generatedSchema).toContain('id Int @id @map("test")');
         });
 
         it('should render @map(name: "")', async () => {

@@ -1,6 +1,5 @@
 import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
-import { VALID_FIELD_KINDS, DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
-import { ModelAttribute } from '../models';
+import { DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
 
 /**
  *
@@ -43,105 +42,6 @@ function renderAttribute(
   if (options?.env) value = `env(${value})`;
 
   return `${name} = ${value}`;
-}
-
-/**
- *
- * @param field The Prisma Field we are generating the relation line for
- * @returns the Relation definition (e.g. @relation(name: "PostToUser"))
- */
-function renderFieldRelation(field: DMMF.Field): string {
-  return field.relationFromFields && field.relationFromFields.length > 0
-    ? `@relation(name: "${field.relationName}", fields: [${field.relationFromFields}], references: [${field.relationToFields}])`
-    : `@relation(name: "${field.relationName}")`;
-}
-
-/**
- *
- * @param field The Prisma Field with a default attribute
- * @returns the Default definition (e.g. @default(autoincrement()))
- */
-function renderDefaultAttribute(field: DMMF.Field): string {
-  // If the default value isn't available, do nothing
-  if (field.default == null || field.default === undefined) return '';
-  let defaultString: any;
-  // We've got ourselves a function! Handle it properly
-  if (typeof field.default === 'object') {
-    defaultString = `${field.default.name}(${field.default.args})`;
-  }
-  // This is a normal value.
-  else {
-    defaultString = field?.default;
-    // If this is a value that should be wrapped in quotes, do so
-    if (field.kind === 'scalar' && field.type !== 'BigInt' && typeof field.default == 'string')
-      defaultString = `"${defaultString}"`;
-  }
-
-  return `@default(${defaultString})`;
-}
-
-/**
- *
- * @param field The Prisma Field we are generating a line
- * @returns The generated Field line for a Model block
- */
-function renderField(field: DMMF.Field): string {
-  // If the field's "kind" isn't valid, throw error
-  if (!VALID_FIELD_KINDS.includes(field.kind))
-    throw new Error(`Unsupported field kind "${field.kind}"`);
-
-  // Initialize the line with the field name and type
-  let fieldString = `${field.name} ${field.type}`;
-
-  // If this is a list field, signify that on the line
-  if (field.isList) fieldString = `${fieldString}[]`;
-  // If this is not a list field, and it isn't required or it is an enum/object, signify that it is optional in the line
-  else if (!field.isRequired || ['enum', 'object'].includes(field.kind))
-    fieldString = `${fieldString}?`;
-
-  // The remaining field attributes are self-explanatory
-  if (field.isId) fieldString = `${fieldString} @id`;
-
-  if (field.isUnique) fieldString = `${fieldString} @unique`;
-
-  if (field.isUpdatedAt) fieldString = `${fieldString} @updatedAt`;
-
-  if (field?.columnName?.length) fieldString = `${fieldString} @map("${field.columnName}")`;
-
-  if (field.hasDefaultValue) fieldString = `${fieldString} ${renderDefaultAttribute(field)}`;
-
-  if (field.relationName) fieldString = `${fieldString} ${renderFieldRelation(field)}`;
-
-  return fieldString;
-}
-
-/**
- *
- * @param uniqueField Array of strings that hold the field names for the unique field
- * @returns The generated Unique line for a model (e.g. @@unique([id, otherId])) )
- */
-function renderUniqueField(uniqueField: string[]): string {
-  return `@@unique([${uniqueField.join(', ')}])`;
-}
-
-/**
- *
- * @param indexes Array of strings that hold the field names the indexed fields
- * @returns The generated index line for a model (e.g. @@index([someId, otherId])) )
- */
-function renderIndex(index: DMMF.uniqueIndex): string {
-  return index?.name?.length
-    ? `@@index(name: "${index.name}", [${index.fields.join(', ')}])`
-    : `@@index([${index.fields.join(', ')}])`;
-}
-
-/**
- *
- * @param fields Fields in the ID definition
- * @returns The generated ID definition for a model. (e.g. @@id([id, otherId]))
- */
-function renderIdOrPk(fields: string[]): string {
-  return fields.length ? `@@id([${fields.join(', ')}])` : '';
 }
 
 /**
@@ -236,37 +136,11 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
     .join('\n');
 }
 
-function renderModelAttribute(attribute: ModelAttribute): string {
-  let pieces = [
-    `${attribute.attributeType}`,
-    [
-      ...(attribute.default ? [attribute.default] : []),
-      ...(attribute.name ? [`name:"${attribute.name}"`] : []),
-      ...(attribute.map ? [`map:"${attribute.map}"`] : []),
-      ...(attribute.sort ? [`sort:${attribute.sort}`] : []),
-      ...(attribute.onDelete ? [`onDelete: ${attribute.onDelete}`] : []),
-      ...(attribute.onUpdate ? [`onUpdate: ${attribute.onUpdate}`] : []),
-      ...(attribute.value ? [`value:${attribute.value}`] : []),
-      ...(attribute.length ? [`length: ${attribute.length}`] : []),
-      ...(attribute.fields ? [`fields: [${attribute.fields.join(',')}]`] : []),
-      ...(attribute.references ? [`references: [${attribute.references.join(',')}]`] : [])
-    ]
-      .filter((chunk) => chunk.length)
-      .join(', ')
-  ].filter((chunk) => chunk.length >= 1);
-
-  if (pieces.length > 1) {
-    pieces = [pieces[0], '(', ...pieces.slice(1), ')'];
-  }
-
-  return pieces.join('');
-}
-
 function renderModelField(field: DMMF.Field) {
   const pieces = [
     field.name,
     `${field.type}${field.optional ? '?' : ''}${field.scalar ? '[]' : ''}`,
-    ...field.attributesFixed.map(renderModelAttribute)
+    field.attributes.join(' ')
   ];
 
   return pieces.join(' ');
@@ -282,12 +156,7 @@ export function renderModels(models: DMMF.Model[]): string {
   return models
     .map((model) => {
       let items = model.extendedFields.map(renderModelField);
-
-      // Render Attribute blocks (data retrieved from custom parser because Prisma's DMMF doesn't provide all the data we need)
-      const modelAttrs = model.extendedModelAttributes
-        .map((attr: any) => attr.attributesFixed)
-        .flat(2);
-      items.push(...modelAttrs.map((attribute: any) => renderModelAttribute(attribute)));
+      items.push(...model.extendedModelAttributes);
 
       return renderBlock('model', model.name, items);
     })
