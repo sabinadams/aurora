@@ -1,16 +1,8 @@
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
 
 generator client {
   provider        = "prisma-client-js"
   output          = "../src/generated"
   previewFeatures = ["referentialIntegrity"]
   engineType      = "library"
-  binaryTargets   = env("BINARY_TARGETS")
-}
-
-model User {
-  id Int @id
+  binaryTargets   = [env("BINARY_TARGETS")]
 }

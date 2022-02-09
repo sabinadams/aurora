@@ -1,0 +1,3 @@
+generator client2 {
+  provider = "prisma-client-js"
+}
