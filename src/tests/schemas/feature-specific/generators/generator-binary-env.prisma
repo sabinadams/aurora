@@ -4,5 +4,5 @@ generator client {
   output          = "../src/generated"
   previewFeatures = ["referentialIntegrity"]
   engineType      = "library"
-  binaryTargets   = ["binary-target"]
+  binaryTargets   = [env("BINARY_TARGETS")]
 }

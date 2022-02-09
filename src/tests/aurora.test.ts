@@ -137,7 +137,7 @@ describe('aurora()', () => {
         'feature-specific/generators/generator-binary-env.prisma'
       ]);
 
-      expect(generatedSchemaWithBinaryEnv).toContain('binaryTargets = ["binary-target"]');
+      expect(generatedSchemaWithBinaryEnv).toContain(`binaryTargets = [env("BINARY_TARGETS")]`);
     });
   });
 
