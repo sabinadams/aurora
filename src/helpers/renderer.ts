@@ -127,6 +127,7 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
         ...generator,
         ...generator.config
       };
+
       return renderBlock(
         'generator',
         generator.name,
