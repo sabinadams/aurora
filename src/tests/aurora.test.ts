@@ -139,6 +139,14 @@ describe('aurora()', () => {
 
       expect(generatedSchemaWithBinaryEnv).toContain(`binaryTargets = [env("BINARY_TARGETS")]`);
     });
+
+    it('should render custom generator options', async () => {
+      const generatedSchemaWithCustomGenOptions = await getGeneratedSchema([
+        'feature-specific/generators/generator-custom.prisma'
+      ]);
+
+      expect(generatedSchemaWithCustomGenOptions).toContain(`createCRUD = "C-R-U-D"`);
+    });
   });
 
   describe('Model Blocks', () => {

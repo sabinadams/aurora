@@ -8,4 +8,3 @@ export declare const ERRORS: {
 };
 export declare const UNSUPPORTED_DATASOURCE_FIELDS: string[];
 export declare const DATASOURCE_FIELDS: string[];
-export declare const GENERATOR_FIELDS: string[];

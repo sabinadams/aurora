@@ -1,5 +1,4 @@
 import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
-import { DATASOURCE_FIELDS, GENERATOR_FIELDS } from '../util/CONSTANTS';
 
 /**
  *
@@ -49,15 +48,13 @@ function renderAttribute(
  * @param fields A list of fields from a generator or datasource
  * @returns A rendered attribute block
  */
-function renderConfigFields(fields: any, renderable: string[]) {
+function renderConfigFields(fields: any) {
   return (
     Object.keys(fields)
       // Don't care about the name field
       .filter((key) => key !== 'name')
       // Make sure the key isn't null
       .filter((key) => fields[key])
-      // Make sure this field is in the list of renderable fields
-      .filter((key) => renderable.includes(key))
       .map((field) => {
         let value = '';
         let isEnvVar = false;
@@ -106,11 +103,7 @@ export function renderDatasources(datasources: DataSource[]): string {
       datasource['provider'] = datasource.activeProvider;
 
       // Render the block
-      return renderBlock(
-        'datasource',
-        datasource.name,
-        renderConfigFields(datasource, DATASOURCE_FIELDS)
-      );
+      return renderBlock('datasource', datasource.name, renderConfigFields(datasource));
     })
     .join('\n');
 }
@@ -128,11 +121,7 @@ export function renderGenerators(generators: GeneratorConfig[]): string {
         ...generator.config
       };
 
-      return renderBlock(
-        'generator',
-        generator.name,
-        renderConfigFields(generator, GENERATOR_FIELDS)
-      );
+      return renderBlock('generator', generator.name, renderConfigFields(generator));
     })
     .join('\n');
 }

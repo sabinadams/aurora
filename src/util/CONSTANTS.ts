@@ -10,10 +10,3 @@ export const ERRORS = {
 export const UNSUPPORTED_DATASOURCE_FIELDS = ['shadowDatabaseUrl', 'referentialIntegrity'];
 
 export const DATASOURCE_FIELDS = ['provider', 'url', 'shadowDatabaseUrl', 'referentialIntegrity'];
-export const GENERATOR_FIELDS = [
-  'provider',
-  'output',
-  'binaryTargets',
-  'previewFeatures',
-  'engineType'
-];

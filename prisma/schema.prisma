@@ -3,6 +3,11 @@ generator js {
   previewFeatures = ["fullTextIndex", "extendedIndexes", "mongoDb"]
 }
 
+generator test {
+  provider = "Test-Provider"
+  createCRUD = "test"
+}
+
 datasource db {
   provider = "mongodb"
   url      = "mongodb://"

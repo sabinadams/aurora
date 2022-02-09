@@ -1,0 +1,4 @@
+generator CustomFields {
+  provider   = "Test-Provider"
+  createCRUD = "C-R-U-D"
+}
