@@ -7,6 +7,7 @@ import { Command } from 'commander';
 import aurora from './aurora';
 import dotenv from 'dotenv';
 
+
 // Get Env Vars
 dotenv.config();
 
