@@ -508,6 +508,22 @@ describe('aurora()', () => {
       expect(generatedSchema).toContain('enum Test');
       expect(generatedSchema).toContain('TestValue');
     });
+
+    it('should render an enum value with only one letter', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/enums/enum-single-letter.prisma'
+      ]);
+
+      expect(generatedSchema).toContain('enum Names');
+
+      const fields = generatedSchema
+        .split('enum Names {')[1]
+        .split('}')[0]
+        .split(' ')
+        .filter((field) => field.length);
+
+      expect(fields.some((field) => field === 'X')).toBeTruthy();
+    });
   });
 
   describe('Glob Config', () => {

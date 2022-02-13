@@ -17,7 +17,7 @@ console.log(chalk.bold.magenta(figlet.textSync('Aurora', { horizontalLayout: 'fu
 // CLI Command
 const program = new Command();
 program
-  .version('0.0.1')
+  .version('1.3.3')
   .description(
     'A tool that orchestrates prisma files in a way that allows multiple .prisma files with cross-relations'
   )
