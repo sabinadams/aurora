@@ -9,7 +9,7 @@ import { DataSource, DMMF, GeneratorConfig } from '@prisma/generator-helper';
  */
 function renderBlock(type: string, name: string, items: string[]): string {
   return `${type} ${name} {\n${items
-    .filter((item) => item.length > 1)
+    .filter((item) => item.length >= 1)
     .map((item) => `\t${item}`)
     .join('\n')}\n}`;
 }
