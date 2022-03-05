@@ -22,3 +22,7 @@ model Post {
 
   @@fulltext([title(sort: Desc), content])
 }
+
+model Test {
+  id String @id @map("_id")
+}

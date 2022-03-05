@@ -90,6 +90,15 @@ describe('aurora()', () => {
       expect(count).toBe(2);
     });
 
+    it('Should filter out duplicate generators', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/generators/generator-dupe-1.prisma',
+        'feature-specific/generators/generator-dupe-2.prisma'
+      ]);
+      const count = (generatedSchema.match(/generator client {/g) || []).length;
+      expect(count).toBe(1);
+    });
+
     it('should render generator name', async () => {
       const generatedSchema = await getGeneratedSchema([
         'feature-specific/generators/generator.prisma'

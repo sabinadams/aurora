@@ -1,0 +1,13 @@
+generator test {
+    provider   = "Test-Provider"
+    createCRUD = "test"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = "mongodb://"
+}
+
+model Test {
+    id String @id @map("_id")
+}
