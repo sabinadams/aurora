@@ -101,6 +101,7 @@ export function renderDatasources(datasources: DataSource[]): string {
     .map((datasource: any) => {
       // Fix naming differences
       datasource['provider'] = datasource.activeProvider;
+      delete datasource['activeProvider'];
 
       // Render the block
       return renderBlock('datasource', datasource.name, renderConfigFields(datasource));

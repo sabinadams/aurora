@@ -1,6 +1,6 @@
 {
   "name": "prisma-aurora",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "CLI tool that orchestrates prisma files in a way that allows multiple .prisma files with cross-relations",
   "main": "./lib/index.js",
   "bin": {
