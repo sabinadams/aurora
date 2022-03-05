@@ -4,15 +4,14 @@ generator js {
 }
 
 generator test {
-  provider = "Test-Provider"
+  provider   = "Test-Provider"
   createCRUD = "test"
 }
 
 datasource db {
   provider = "mongodb"
   url      = "mongodb://"
-} 
-
+}
 
 model Post {
   id      String @id @map("_id") @db.ObjectId

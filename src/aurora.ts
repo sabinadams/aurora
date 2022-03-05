@@ -55,7 +55,10 @@ export default async function aurora() {
     []
   );
 
-  const generators = Array.from(new Set(allGenerators));
+  // Get a unique list
+  const generators = Array.from(new Set(allGenerators.map((gen) => JSON.stringify(gen)))).map(
+    (gen) => JSON.parse(gen)
+  );
 
   const generator = renderGenerators(generators);
 

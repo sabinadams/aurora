@@ -1,4 +1,6 @@
 {
-    "files": [ "./prisma/schema.prisma" ],
+    "files": [
+        "./prisma/*.prisma"
+    ],
     "output": "./generated.prisma"
 }
