@@ -1,18 +1,11 @@
 #!/usr/bin/env node
 
-import { default as chalk } from 'chalk';
-import clear from 'clear';
-import * as figlet from 'figlet';
 import { Command } from 'commander';
 import aurora from './aurora';
 import dotenv from 'dotenv';
 
 // Get Env Vars
 dotenv.config();
-
-// Console Welcome
-clear();
-console.log(chalk.bold.magenta(figlet.textSync('Aurora', { horizontalLayout: 'full' })));
 
 // CLI Command
 const program = new Command();
