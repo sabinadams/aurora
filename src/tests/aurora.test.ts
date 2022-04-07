@@ -298,14 +298,14 @@ describe('aurora()', () => {
 
       it('should render ?', async () => {
         const generatedSchema = await getGeneratedSchema([
-          'feature-specific/model-fields/model-field-?.prisma'
+          'feature-specific/model-fields/model-field-question.prisma'
         ]);
         expect(generatedSchema).toContain('date DateTime?');
       });
 
       it('should render []', async () => {
         const generatedSchema = await getGeneratedSchema([
-          'feature-specific/model-fields/model-field-[].prisma'
+          'feature-specific/model-fields/model-field-array.prisma'
         ]);
         expect(generatedSchema).toContain('data String[]');
       });
