@@ -10,7 +10,7 @@
     "lib/"
   ],
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
+    "dev": "nodemon --watch src/**/*.ts --exec ts-node src/index.ts",
     "create": "npm run build && npm run test",
     "build": "tsc",
     "prepack": "npm run build",
