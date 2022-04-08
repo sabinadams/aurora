@@ -9,6 +9,8 @@
     "strict": true,
     "types": ["node", "jest"],
     "esModuleInterop": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "removeComments": true,
+  },
+  "exclude": ["node_modules", "src/tests"]
 }
