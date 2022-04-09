@@ -172,7 +172,7 @@ Aurora merges the fields to create one model with all relations defined.
 
 We'll be very thankful for all your contributions, whether it's for helping us find issues in our code, highlighting features that're missing, writing tests for uncovered cases, or contributing to the codebase.
 
-Read the Contributing guide to get started.
+Read the [Contributing guide](https://github.com/sabinadams/aurora/blob/master/CONTRIBUTING.md) to get started.
 
 ## Missing Something?
 
