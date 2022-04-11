@@ -518,6 +518,17 @@ describe('aurora()', () => {
       expect(generatedSchema).toContain('TestValue');
     });
 
+    it('should render one combined enum', async () => {
+      const generatedSchema = await getGeneratedSchema([
+        'feature-specific/enums/enum.prisma',
+        'feature-specific/enums/same-enum.prisma'
+      ]);
+
+      expect(generatedSchema).toContain('enum Test');
+      expect(generatedSchema).toContain('TestValue');
+      expect(generatedSchema).toContain('AnotherTestValue');
+    });
+
     it('should render an enum value with only one letter', async () => {
       const generatedSchema = await getGeneratedSchema([
         'feature-specific/enums/enum-single-letter.prisma'
