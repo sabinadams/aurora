@@ -118,7 +118,6 @@ model Author {
     age       Int
     books     Book[]
 }
-
 model Book {
     id Int @id
     authorId Int
@@ -126,7 +125,6 @@ model Book {
 }
 ```
 > Notice in the `Book` alias here, I only have to define the fields required to make the relationship.
-
 ##### Book.prisma
 ```prisma
 model Book {
@@ -137,7 +135,6 @@ model Book {
     releaseDate DateTime
     genre       String
 }
-
 model Author {
     id Int @id
     books Book[]
@@ -170,6 +167,12 @@ Aurora merges the fields to create one model with all relations defined.
 > Technically speaking, in this scenario the `Author.prisma` file does not need the `Book` alias or `books` field on the `Author` model as those will get merged in from the `Book.prisma` schema. But I left them in to make the model more explicit.
 
 ---
+
+## Contributing
+
+We'll be very thankful for all your contributions, whether it's for helping us find issues in our code, highlighting features that're missing, writing tests for uncovered cases, or contributing to the codebase.
+
+Read the [Contributing guide](https://github.com/sabinadams/aurora/blob/master/CONTRIBUTING.md) to get started.
 
 ## Missing Something?
 
