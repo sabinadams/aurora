@@ -6,7 +6,7 @@ datasource db {
 
 generator js {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextIndex", "extendedIndexes", "mongoDb"]
+  previewFeatures = ["fullTextIndex", "extendedIndexes"]
 }
 
 generator test {
