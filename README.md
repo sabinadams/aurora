@@ -22,7 +22,6 @@
 
 Aurora is a CLI tool that stitches together prisma files, which allows you to split up the prisma schema into smaller, easier-to-manage chunks.
 
-
 ## Installation
 
 First, install the aurora package as a dev dependency.
@@ -32,21 +31,18 @@ npm i --save-dev prisma-aurora
 ```
 
 Once installed, create a file named `aurora.config.json`. This is what Aurora uses to find out which files to put together and where to output the generated combined file.
+
 ```json
 {
-  "files": [
-      "./Datasource.prisma",
-      "./Generator.prisma",
-      "./User.prisma",
-      "./Profile.prisma"
-  ],
+  "files": ["./Datasource.prisma", "./Generator.prisma", "./User.prisma", "./Profile.prisma"],
   "output": "./output/file/path/file.prisma"
 }
 ```
-| Key | Type | Description |
-| ------------- | ------------- | ------------- |
-| Files | String[] | A list of paths to .prisma files you want included in the merge (relative to config file location)|
-| Output | String  | The location (including filename) to generate the combined file into.|
+
+| Key    | Type     | Description                                                                                        |
+| ------ | -------- | -------------------------------------------------------------------------------------------------- |
+| Files  | String[] | A list of paths to .prisma files you want included in the merge (relative to config file location) |
+| Output | String   | The location (including filename) to generate the combined file into.                              |
 
 <br>
 
@@ -67,6 +63,7 @@ If you have two models in separate files that each have the same name but have d
 Consider, for example, a situation where you have a prisma file for indivdual services in your application. Both files might describe a user differently in the context of their own functionality, but the resulting prisma client will need both sets of definitions.
 
 ##### AuthService.prisma
+
 ```prisma
 model User {
     id        Int @id @default(@autoincrement())
@@ -77,18 +74,20 @@ model User {
 ```
 
 ##### ProfileService.prisma
+
 ```prisma
 model User {
     id       Int @id @default(@autoincrement())
     username String
     email    String
     age      Int
-    
+
     @@index([id])
 }
 ```
 
 After running `aurora`, the generated schema will look like this:
+
 ```prisma
 model User {
     id        Int @id @default(@autoincrement())
@@ -97,7 +96,7 @@ model User {
     age       Int
     password  String
     lastLogin DateTime @map("last_login")
-    
+
     @@index([id])
 }
 ```
@@ -109,6 +108,7 @@ One common scenario that arises when splitting the schema out into smaller chunk
 For example, consider the scenario where you have an `Author` model and a `Book` model, each defined in separate files. An `Author` may have many `Book`s. Here's how we could define that.
 
 ##### Author.prisma
+
 ```prisma
 model Author {
     id        Int @id @default(autoincrement())
@@ -124,8 +124,11 @@ model Book {
     author Author @relation(fields: [authorId], references: [id])
 }
 ```
+
 > Notice in the `Book` alias here, I only have to define the fields required to make the relationship.
+
 ##### Book.prisma
+
 ```prisma
 model Book {
     id          Int @id @default(autoincrement())
@@ -162,7 +165,7 @@ model Book {
 }
 ```
 
-Aurora merges the fields to create one model with all relations defined. 
+Aurora merges the fields to create one model with all relations defined.
 
 > Technically speaking, in this scenario the `Author.prisma` file does not need the `Book` alias or `books` field on the `Author` model as those will get merged in from the `Book.prisma` schema. But I left them in to make the model more explicit.
 
@@ -170,7 +173,7 @@ Aurora merges the fields to create one model with all relations defined.
 
 ## Contributing
 
-We'll be very thankful for all your contributions, whether it's for helping us find issues in our code, highlighting features that're missing, writing tests for uncovered cases, or contributing to the codebase.
+Contributions are very welcome!
 
 Read the [Contributing guide](https://github.com/sabinadams/aurora/blob/master/CONTRIBUTING.md) to get started.
 

@@ -1,15 +1,17 @@
-# How do I Contribute 💪
+# How do I Contribute?
 
-we're excited to have you on board!
+So, you want to help? Here's where to start!
 
-- Take a look at the existing [Issues](https://github.com/YassinEldeeb/create-prisma-generator/issues) or [create a new issue](https://github.com/YassinEldeeb/create-prisma-generator/issues/new)!
+- Take a look at the existing [Issues](https://github.com/sabinadams/aurora/issues) or [create a new issue](https://github.com/sabinadams/aurora/issues/new)!
 - Fork the Repo. Then, create a branch for any issue that you are working on. Finally, commit your work.
-- Create a **[Pull Request](https://github.com/YassinEldeeb/create-prisma-generator/compare)**, which will be reviewed and given suggestions for improvements.
+- Create a **[Pull Request](https://github.com/sabinadams/aurora/compare)**, which will be reviewed and given suggestions for improvements (if needed).
 
 # Prerequisites
+
 Node.js version installed, [latest LTS is recommended](https://nodejs.org/en/about/releases/)
 
-# How do I start developing?
+# Development Environment
+
 Setup and install the needed dependencies by following these steps:
 
 ```sh
