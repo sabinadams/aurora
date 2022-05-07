@@ -25,10 +25,10 @@ Aurora is a CLI tool that stitches together prisma files, which allows you to sp
 
 ## Installation
 
-First, install the aurora package
+First, install the aurora package as a dev dependency.
 
-```
-npm i --save prisma-aurora
+```sh
+npm i --save-dev prisma-aurora
 ```
 
 Once installed, create a file named `aurora.config.json`. This is what Aurora uses to find out which files to put together and where to output the generated combined file.
