@@ -9,5 +9,6 @@ datasource db {
 }
 
 model Test {
-    id String @id @map("_id")
+    id   String @id @map("_id")
+    name String
 }
