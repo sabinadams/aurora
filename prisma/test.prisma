@@ -1,14 +1,5 @@
-generator test {
-    provider   = "Test-Provider"
-    createCRUD = "test"
-}
-
-datasource db {
-    provider = "mongodb"
-    url      = "mongodb://"
-}
-
 model Test {
-    id   String @id @map("_id")
-    name String
+    id    String  @id @map("_id")
+    name  String
+    price Decimal @db.Money
 }

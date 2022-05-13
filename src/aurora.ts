@@ -1,4 +1,10 @@
-import { parseSchema, getAuroraConfigJSON, combineModels, writeSchema } from './helpers';
+import {
+  parseSchema,
+  getAuroraConfigJSON,
+  combineModels,
+  writeSchema,
+  combineEnums
+} from './helpers';
 import { AuroraConfig, SchemaInformation } from './models';
 import type { DataSource, GeneratorConfig, DMMF } from '@prisma/generator-helper';
 import { ERRORS } from './util/CONSTANTS';
@@ -20,9 +26,11 @@ export default async function aurora() {
 
   // Get all the enums
   const enums: string = renderEnums(
-    schemas.reduce(
-      (acc: DMMF.DatamodelEnum[], curr: SchemaInformation) => [...acc, ...curr.enums],
-      []
+    combineEnums(
+      schemas.reduce(
+        (acc: DMMF.DatamodelEnum[], curr: SchemaInformation) => [...acc, ...curr.enums],
+        []
+      )
     )
   );
 
