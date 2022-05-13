@@ -9,12 +9,7 @@ dotenv.config();
 
 // CLI Command
 const program = new Command();
-program
-  .version('1.3.3')
-  .description(
-    'A tool that orchestrates prisma files in a way that allows multiple .prisma files with cross-relations'
-  )
-  .parse(process.argv);
+program.parse(process.argv);
 
 // Run aurora
 aurora();
