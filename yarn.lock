@@ -1245,8 +1245,8 @@ commander@^2.19.0:
   resolved "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
 
 commander@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.npmjs.org/commander/-/commander-9.2.0.tgz"
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.3.0.tgz#f619114a5a2d2054e0d9ff1b31d5ccf89255e26b"
 
 commondir@^1.0.1:
   version "1.0.1"
