@@ -480,10 +480,10 @@
     fastq "^1.6.0"
 
 "@prisma/client@^3.14.0":
-  version "3.14.0"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-3.14.0.tgz"
+  version "3.15.1"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-3.15.1.tgz#798e8bf0370abe686d599c822e93f7adb7c0c9c0"
   dependencies:
-    "@prisma/engines-version" "3.14.0-36.2b0c12756921c891fec4f68d9444e18c7d5d4a6a"
+    "@prisma/engines-version" "3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e"
 
 "@prisma/debug@3.13.0":
   version "3.13.0"
@@ -518,9 +518,9 @@
     strip-ansi "6.0.1"
     undici "5.0.0"
 
-"@prisma/engines-version@3.14.0-36.2b0c12756921c891fec4f68d9444e18c7d5d4a6a":
-  version "3.14.0-36.2b0c12756921c891fec4f68d9444e18c7d5d4a6a"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-3.14.0-36.2b0c12756921c891fec4f68d9444e18c7d5d4a6a.tgz"
+"@prisma/engines-version@3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e":
+  version "3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e.tgz#bf5e2373ca68ce7556b967cb4965a7095e93fe53"
 
 "@prisma/engines@3.14.0-36.2b0c12756921c891fec4f68d9444e18c7d5d4a6a":
   version "3.14.0-36.2b0c12756921c891fec4f68d9444e18c7d5d4a6a"
